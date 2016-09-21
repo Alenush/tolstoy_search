@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head lang="ru">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Толстой поиск</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/main_style.css' /%}">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
+</head>
+{% load staticfiles %}
+<body style="background:url({% static 'leo_tolstoy/images/field_bg.jpg' %}) no-repeat 100%;">
+
+<div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h1>Лев Толстой</h1>
+
+                    <!--<div class="input-icon">-->
+                        <!--<span class="fa fa-info" aria-hidden="true">?</span>-->
+                    <!--</div>-->
+
+                </div>
+            </div>
+
+          <div class="container-fluid">
+          <div class="row">
+          <div class="col-sm-12">
+          <div class="inner cover">
+
+              <div class="col-xs-12 col-sm-5 info-block">
+
+                <a href="{% url 'show_data' %}">
+                    <h2>Произведения писателя</h2>
+                    <p>Скачать данные в формате XML</p>
+                </a>
+
+              </div>
+              <div class="col-xs-12 col-sm-2"></div>
+
+              <div class="col-xs-12 col-sm-5 info-block">
+
+                <a href="{% url 'search_main' %}">
+                    <h2>Поиск по произведениям</h2>
+                    <p>Найди любой отрывок произведения любимого автора</p>
+                </a>
+
+               </div>
+              </div>
+          </div>
+          </div>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Сайт создан при поддержке музея Толстого и Высшей школы экономики. <em>by Alenush</em></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+</body>
+</html>
