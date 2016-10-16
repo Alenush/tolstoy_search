@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-<head lang="ru">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Толстой поиск</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/styles.css' /%}">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'leo_tolstoy/bootstrap/bootstrap.min.js' %}"></script>
+{% extends "fish_template.html" %}
 
-    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
-</head>
+{% block content %}
+
 {% load staticfiles %}
-<body style="background-color:#fffef9">
-<!-- #fbfbf5 -->
-<div class="container">
-
-    <footer class="row">
-        <!---Menu -->
-            <div class="masthead clearfix">
-
-                <div class="inner">
-                  <nav>
-                    <ul class="nav masthead-nav">
-                      <li><a href="{% url 'index' %}">Главная</a></li>
-                      <li><a href="{% url 'show_data' %}">Данные</a></li>
-                      <li><a href="{% url 'search_main' %}">Поиск</a></li>
-                    </ul>
-                  </nav>
-
-          </div>
-          </div>
 
 
           <div class="container-fluid">
@@ -39,33 +10,519 @@
           <div class="cover">
 
 
+              <div style="padding:2em;">
+
               <h1>Поиск по произведениям Льва Толстого</h1>
 
-              <form>
-              <div class="form-group">
+              <form id="search_form">
+              <div class="form-group" style="padding:3em">
                 <label for="search_input"></label>
                 <input type="text" class="form-control" id="search_input" aria-describedby="search_help" placeholder="Введите запрос">
-                <!--<small id="search_help" class="form-text text-muted">Найдется и Анна и Наташа ;)</small>-->
+                <small id="search_help" class="form-text text-muted ">Введите запрос. Вы также можете воспользоваться фильтрами ниже.</small>
+                <br><button type="submit" class="btn btn-lg mybutton" >Найти</button>
               </div>
-              <button class="btn btn-lg mybutton">Найти</button>
+
+              </div>
+
+              <center><h3>Расширенный поиск</h3></center>
+              <img id="show_search" src="{% static 'leo_tolstoy/images/open-book.png' %}" style="cursor:pointer; padding:1em">
+              <!--<center><div id="show_search" class="alert head_search" style="width:50%">Расширенный поиск</div></center>-->
+
+
+              <div id="extra_search" style="display:none;">
+                <div class="container-fluid">
+
+                <div class="toggle" style="padding:2em">
+
+                    <fieldset name="visible_toogle" style="padding:1em">
+
+                                  <div class="switch-toggle switch-ios">
+                                    <input id="search_text" value="pos" name="format" type="radio" checked>
+                                    <label for="search_text" onclick="">Текстовый поиск</label>
+
+                                    <input id="search_meta" value = "all" name="format" type="radio">
+                                    <label for="search_meta" onclick="">Поиск по метаданным</label>
+
+                                  <a></a>
+                                  </div>
+                                </fieldset>
+
+                </div>
+
+                <div id='time' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                      <div class="head_search form-control">Время написания</div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="30">
+                            1830-1840
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="40">
+                            1841-1850
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="50">
+                            1851-1860
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="60">
+                            1861-1870
+                          </label>
+                        </div>
+                        <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="70">
+                            1871-1880
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="80">
+                            1881-1890
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input "  value="90">
+                            1890 и позже
+                          </label>
+                        </div>
+                  </div>
+                  </div>
+
+
+
+
+                  <div id='century' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                      <div class="head_search form-control">Век повествования</div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="17">
+                            XVII век
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="17-18">
+                            XVII-XVIII век
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="18">
+                            XVIII век
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="18-19">
+                            XVIII-XIX век
+                          </label>
+                        </div>
+                        <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="19">
+                            XIX век
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="19-20">
+                            XIX-XX век
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input "  value="20">
+                            XX век
+                          </label>
+                        </div>
+                  </div>
+                  </div>
+
+
+                  <div id='sphere' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                      <div class="head_search form-control">Сфера</div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="priv_del">
+                            личная и деловая переписка
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="god">
+                            церковно-богословская литература
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="child">
+                            детская литература
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="did">
+                            дидактика
+                          </label>
+                        </div>
+                        <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="diary">
+                            дневники и записные книжки
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="public">
+                            публицистика
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input "  value="hudozh">
+                            художественная
+                          </label>
+                        </div>
+                  </div>
+                  </div>
+
+
+                <div id='place' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Место действия</div>
+                    <select name="finish" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="eu" class="form-control">Европа</option>
+                      <option value="ru" class="form-control">Россия</option>
+                      <option value="rueu" class="form-control">Европа и Россия</option>
+                    </select>
+                  </div></div>
+
+
+                  <div id='finish' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Законченность</div>
+                    <select name="finish" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="finished" class="form-control">Законченное</option>
+                      <option value="notfinished" class="form-control">Незаконченное</option>
+                    </select>
+                  </div></div>
+
+                  <div id='edition' class="place">
+                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Издание</div>
+                    <select name="edit" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="edit" class="form-control">Изданное</option>
+                      <option value="notedit" class="form-control">Неизданное</option>
+                    </select>
+                  </div></div>
+
+                    <div id='topic' class="place" style="display:none;">
+                  <div class="col-sm-5" style="text-align:left; padding:2em; float: left">
+                      <div class="head_search form-control">Тема/Топик</div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="delo">
+                            деловая переписка
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="art">
+                            искусство
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="med">
+                            медицина
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="edu">
+                            образование
+                          </label>
+                        </div>
+                        <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="politic">
+                            политика и общественная жизнь
+                          </label>
+                        </div>
+                      <div class="form-check ">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="phil">
+                            философия и религия
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input "  value="privet">
+                            частная жизнь
+                          </label>
+                        </div>
+                  </div>
+                  </div>
+
+
+                  <div id='type' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                        <div class="head_search form-control">Тип произведения</div>
+                            <div class="col-sm-4">
+                            <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="notes">
+                            заметки
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="prit">
+                            притча
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="plot">
+                            повесть
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="sbornik">
+                            сборник
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="roman">
+                            роман
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="live">
+                            житие
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="gram">
+                            грамматика
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="notebook">
+                            записная книжка
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="diar">
+                            дневник
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="rassk">
+                            рассказ
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="sb_ras">
+                            сборник рассказов
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="letter">
+                            письмо
+                            </label>
+                            </div>
+                                <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="fair">
+                            сказка
+                            </label>
+                            </div>
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="article">
+                            статья
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="death">
+                            завещание
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="trup">
+                            некролог
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="attention">
+                            объявление
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="short">
+                            конспект
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="speech">
+                            речь
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="traktat">
+                            трактат
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="poem">
+                            поэзия
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="otch">
+                            очерк
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="lists">
+                            записки
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="cut">
+                            отрывок
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="azb">
+                            азбука
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="auto">
+                            автобиография
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="dialog">
+                            диалог
+                            </label>
+                            </div>
+                         </div>
+
+                        <div class="col-sm-4">
+                                <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="prosh">
+                            прошение
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="road">
+                            путевые записки
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="comedy">
+                            комедия
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="project">
+                            проект
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="sb_af">
+                            сборник афоризмов
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="overr">
+                            пересказ
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="trans">
+                            перевод
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="ask">
+                            обращение
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="plan">
+                            план
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="pray">
+                            молитва
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="legend">
+                            легенда
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="ustav">
+                            устав
+                            </label>
+                            </div><div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="drama">
+                            драма
+                            </label>
+                            </div>
+                        </div>
+
+                  </div>
+                  </div>
+
+
+              <!-- 90 volums => 30 * 3 => 30/2  -->
+              <div id='volums' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                      <div class="head_search form-control">Выберите том</div>
+
+                      {% for number in vol_array %}
+                      <div class="col-sm-1 form-check">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"  value="vol_{{number}}">
+                            {{number}}
+                          </label>
+                        </div>
+                      {% endfor %}
+
+              </div></div>
+
+
+                </div></div>
+
               </form>
           </div>
           </div>
           </div>
 
-          <div class="container navbar-fixed-bottom">
-            <div class="footnote">
-              <p style="color:#333">Сайт создан при поддержке музея Толстого и Высшей школы экономики. <em>by Alenush</em></p>
-            </div>
-          </div>
 
-
-    </div>
-
-</div>
-
-
-
-
-</body>
-</html>
+{% endblock %}

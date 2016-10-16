@@ -1,0 +1,72 @@
+{% block main %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head lang="ru">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Толстой поиск</title>
+    {% load staticfiles %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/switch-toggle.css' %}">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://fb.me/react-0.10.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
+</head>
+{% load staticfiles %}
+<body style="background-color:#fffef9">
+<!-- #fbfbf5 -->
+<div class="container">
+
+    <div class="row">
+
+            <!---Menu -->
+        <nav class="navbar">
+            <div class="nav masthead">
+
+                <div class="inner">
+                  <nav>
+                    <ul class="nav masthead-nav">
+                      <li><a href="{% url 'index' %}">Главная</a></li>
+                      <li><a href="{% url 'show_data' %}">Тексты</a></li>
+                      <li><a href="{% url 'search_main' %}">Поиск</a></li>
+                    </ul>
+                  </nav>
+
+                </div>
+            </div>
+        </nav>
+
+        {% block content %}
+
+
+        {% endblock %}
+
+                <a href="#" class="back-to-top">Up</a>
+
+          <div class="container">
+            <div class="footnote">
+              <p>Сайт создан при поддержке музея Толстого и Высшей школы экономики. <em>by Alenush</em></p>
+            </div>
+          </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript" src="{% static 'leo_tolstoy/bootstrap/bootstrap.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'leo_tolstoy/js/search.js' %}"></script>
+
+
+<script type="text/javascript" src="{% static 'leo_tolstoy/js/dynamic_for_all.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'leo_tolstoy/js/search_in_docs.js' %}"></script>
+
+</body>
+</html>
+
+{% endblock %}
+
+

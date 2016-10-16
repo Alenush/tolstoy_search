@@ -1,89 +1,90 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-<head lang="ru">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Толстой поиск</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/styles.css' /%}">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+{% extends "fish_template.html" %}
 
-    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
-</head>
+{% block content %}
+
 {% load staticfiles %}
 
-<body style="background-color:#fffef9">
+        <div id="container" class="content">
 
-<div class="container">
 
-    <div class="row">
-    <!---Menu -->
-        <nav class="navbar">
-            <div class="nav masthead">
+            <!--<div class="search_icon">-->
+            <!--<img id="show_search" src="{% static 'leo_tolstoy/images/search_data.png' %}"-->
+                 <!--style="cursor:pointer; padding:1em">-->
+            <!--</div>-->
 
-                <div class="inner">
-                  <nav>
-                    <ul class="nav masthead-nav">
-                      <li><a href="{% url 'index' %}">Главная</a></li>
-                      <li><a href="{% url 'show_data' %}">Данные</a></li>
-                      <li><a href="{% url 'search_main' %}">Поиск</a></li>
-                    </ul>
-                  </nav>
-
-                </div>
+            <form action="#" class="search_icon">
+            <div class="col-sm-12">
+            <div class="input-group">
+              <input id="query" type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button id='search_ok' class="btn vol_button" type="button">Ок!</button>
+              </span>
             </div>
-        </nav>
+            </div>
+            </form>
 
             <div class="container-fluid">
             <h1>Творчество Льва Толстого</h1>
 
             <div class="col-sm-12">
 
-                <button class="btn mybutton">Художественная литература</button>
-                <button class="btn mybutton">90-томное собрание сочинений</button>
-                <button class="btn mybutton">Публицистика</button>
-                <button class="btn mybutton">Дневники</button>
-                <button class="btn mybutton">Письма</button>
+                <button id="all" class="btn mybutton">Всё</button>
+                <button id="chud" class="btn mybutton">Художественная литература</button>
+                <button id="volums" class="btn mybutton">90-томное собрание сочинений</button>
+                <button id="public" class="btn mybutton">Публицистика</button>
+                <button id="diaries" class="btn mybutton">Дневники</button>
+            </div>
+            <div class="col-sm-12">
+                <button id="letters" class="btn mybutton">Письма</button>
+                <button id="children" class="btn mybutton">Детская литература</button>
+                <button id="church" class="btn mybutton">Церковно-богословская литература</button>
 
             </div>
             </div>
 
-            <div class="container-fluid">
+
+            <div id="volms" class="container-fluid" style="display:none">
 
                 <p></p>
 
-                <div class="col-sm-4">
+                {% for vol in volums %}
+                <div class="col-sm-3 one_doc one_volum">
 
-                    Война и мир <br><br><br><br>
+                   <a href="./data/download/vol{{vol}}" target="_blank">
+                   <img id="one_vol" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
+                   <p id="vol_{{vol}}">Том {{vol}}</p>
 
-                </div>
-                <div class="col-sm-4" >
-
-                    Война и мир <br><br><br><br>
-
-                </div>
-                <div class="col-sm-4" >
-
-                    Война и мир <br><br><br><br>
+                   </a>
 
                 </div>
-                <div class="col-sm-4" >
+                {% endfor %}
 
-                    Война и мир <br><br><br><br>
-
-                </div>
             </div>
 
+            <div id="all_works" class="container-fluid">
 
-          <div class="container">
-            <div class="footnote">
-              <p>Сайт создан при поддержке музея Толстого и Высшей школы экономики. <em>by Alenush</em></p>
+                <div id="download_all" style="padding:2em">
+                <a href="{% url 'files_download' tag='all' %}" target="_blank"><button class="btn head_search">Скачать все произведения одним файлом</button></a>
+                </div>
+                <p></p>
+
+                {% for work in works %}
+
+                <div class="col-sm-3 one_doc {{work.sphere}}">
+
+                   <a href="./data/download/{{work.filename}}" target="_blank">
+                   <img id="one_doc" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
+                   <p class="one_work">{{work.name}}</p>
+
+                   </a>
+                </div>
+
+                {% endfor %}
+
             </div>
-          </div>
 
-</div>
-</div>
+        </div>
 
-</body>
-</html>
+
+
+{% endblock %}
