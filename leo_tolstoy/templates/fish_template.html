@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/switch-toggle.css' %}">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://fb.me/react-0.10.0.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
 </head>
 {% load staticfiles %}
@@ -42,11 +43,12 @@
 
         {% endblock %}
 
-                <a href="#" class="back-to-top">Up</a>
+         <a href="#" class="back-to-top">Up</a>
 
           <div class="container">
             <div class="footnote">
-              <p>Сайт создан при поддержке музея Толстого и Высшей школы экономики. <em>by Alenush</em></p>
+              <p>Сайт создан при поддержке музея Толстого и <a href="https://hse.ru">Высшей школы экономики</a>.
+                  <em><a href="https://vk.com/alenusch93">by Alenush</a></em></p>
             </div>
           </div>
 
@@ -62,7 +64,7 @@
 
 <script type="text/javascript" src="{% static 'leo_tolstoy/js/dynamic_for_all.js' %}"></script>
 
-<script type="text/javascript" src="{% static 'leo_tolstoy/js/search_in_docs.js' %}"></script>
+<!--<script type="text/javascript" src="{% static 'leo_tolstoy/js/search_in_docs.js' %}"></script>-->
 
 </body>
 </html>

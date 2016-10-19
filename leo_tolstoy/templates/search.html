@@ -14,13 +14,15 @@
 
               <h1>Поиск по произведениям Льва Толстого</h1>
 
-              <form id="search_form">
+              <form id="search_form" action="{% url 'lemma_search' %}" method="post">
+                  {% csrf_token %}
               <div class="form-group" style="padding:3em">
                 <label for="search_input"></label>
                 <input type="text" class="form-control" id="search_input" aria-describedby="search_help" placeholder="Введите запрос">
                 <small id="search_help" class="form-text text-muted ">Введите запрос. Вы также можете воспользоваться фильтрами ниже.</small>
-                <br><button type="submit" class="btn btn-lg mybutton" >Найти</button>
+                <br><button type="submit" class="btn btn-lg mybutton">Найти</button>
               </div>
+              </form>
 
               </div>
 
@@ -29,6 +31,9 @@
               <!--<center><div id="show_search" class="alert head_search" style="width:50%">Расширенный поиск</div></center>-->
 
 
+
+              <form id="search_form_big" action="{% url 'all_search' %}" method="post">
+                  {% csrf_token %}
               <div id="extra_search" style="display:none;">
                 <div class="container-fluid">
 
@@ -49,55 +54,92 @@
 
                 </div>
 
+                <div class="form-group" style="padding:3em">
+                <label for="search_input"></label>
+                <input type="text" class="form-control" id="search_big_input" aria-describedby="search_help" placeholder="Введите запрос">
+                <br><button type="submit" class="btn btn-lg mybutton">Найти</button>
+              </div>
+
+
+                    <div class="col-sm-4">
+
+                   <div id='place' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Место действия</div>
+                    <select name="finish" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="eu" class="form-control">Европа</option>
+                      <option value="ru" class="form-control">Россия</option>
+                      <option value="rueu" class="form-control">Европа и Россия</option>
+                    </select>
+                  </div></div>
+
+
+                  <div id='finish' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Законченность</div>
+                    <select name="finish" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="finished" class="form-control">Законченное</option>
+                      <option value="notfinished" class="form-control">Незаконченное</option>
+                    </select>
+                  </div></div>
+
+                    </div>
+
+
                 <div id='time' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                  <div class="col-sm-8" style="text-align:left; padding:2em; float: left">
                       <div class="head_search form-control">Время написания</div>
+
+                      <div class="col-sm-3">
+
                       <div class="form-check">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="30">
-                            1830-1840
+                            <button id="but3040" type="button" class="btn vol_button form-control">
+                            1830-1850</button>
                           </label>
                         </div>
                       <div class="form-check ">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="40">
-                            1841-1850
+                            <button id="but5070" type="button" class="btn vol_button form-control">
+                            1850-1870</button>
                           </label>
                         </div>
                       <div class="form-check">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="50">
-                            1851-1860
+                            <button id="but70" type="button" class="btn vol_button form-control" >
+                            1871-1880</button>
                           </label>
                         </div>
                       <div class="form-check ">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="60">
-                            1861-1870
+                            <button id="but80" type="button" class="btn vol_button form-control">
+                            1881-1890</button>
                           </label>
                         </div>
                         <div class="form-check ">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="70">
-                            1871-1880
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="80">
-                            1881-1890
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input "  value="90">
-                            1890 и позже
+                            <button id="but90" type="button" class="btn vol_button form-control" >
+                            1890  и позже</button>
                           </label>
                         </div>
                   </div>
+                  <div class="col-sm-8 checks">
+
+                   {% for year in years %}
+                  <div class="col-sm-3" style="display:none">
+                  <label class="checkbox_year">
+                        <input type="checkbox" class="btn checkbox_year" value="{{ year }}">
+                        {{ year }}
+                        </label>
+                  </div>
+                   {% endfor %}
+
                   </div>
 
-
+                  </div>
+                  </div>
 
 
                   <div id='century' class="place">
@@ -148,7 +190,6 @@
                   </div>
                   </div>
 
-
                   <div id='sphere' class="place">
                   <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
                       <div class="head_search form-control">Сфера</div>
@@ -197,31 +238,10 @@
                   </div>
                   </div>
 
+                    <div class="col-sm-4">
 
-                <div id='place' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Место действия</div>
-                    <select name="finish" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="eu" class="form-control">Европа</option>
-                      <option value="ru" class="form-control">Россия</option>
-                      <option value="rueu" class="form-control">Европа и Россия</option>
-                    </select>
-                  </div></div>
-
-
-                  <div id='finish' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Законченность</div>
-                    <select name="finish" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="finished" class="form-control">Законченное</option>
-                      <option value="notfinished" class="form-control">Незаконченное</option>
-                    </select>
-                  </div></div>
-
-                  <div id='edition' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
+                    <div id='edition' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
                     <div class="head_search form-control">Издание</div>
                     <select name="edit" class="form-control">
                       <option value="none" class="form-control">-</option>
@@ -229,6 +249,19 @@
                       <option value="notedit" class="form-control">Неизданное</option>
                     </select>
                   </div></div>
+
+
+                    <div id='cycle' class="place">
+                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                    <div class="head_search form-control">Цикл произведений</div>
+                    <select name="cycle" class="form-control">
+                      <option value="none" class="form-control">-</option>
+                      <option value="edit" class="form-control">Входит в цикл</option>
+                    </select>
+                  </div></div>
+
+                    </div>
+
 
                     <div id='topic' class="place" style="display:none;">
                   <div class="col-sm-5" style="text-align:left; padding:2em; float: left">
@@ -282,7 +315,7 @@
                   <div id='type' class="place">
                   <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
                         <div class="head_search form-control">Тип произведения</div>
-                            <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="notes">
@@ -328,7 +361,10 @@
                             <input type="checkbox" class="form-check-input" value="diar">
                             дневник
                             </label>
-                            </div><div class="form-check">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="rassk">
                             рассказ
@@ -350,10 +386,6 @@
                             сказка
                             </label>
                             </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
                                 <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="article">
@@ -384,7 +416,11 @@
                             <input type="checkbox" class="form-check-input" value="speech">
                             речь
                             </label>
-                            </div><div class="form-check">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="traktat">
                             трактат
@@ -425,20 +461,22 @@
                             диалог
                             </label>
                             </div>
-                         </div>
-
-                        <div class="col-sm-4">
                                 <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="prosh">
                             прошение
                             </label>
-                            </div><div class="form-check">
+                            </div>
+                            <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="road">
                             путевые записки
                             </label>
-                            </div><div class="form-check">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-check">
                             <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" value="comedy">
                             комедия

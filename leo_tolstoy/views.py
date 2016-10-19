@@ -21,7 +21,11 @@ def show_data(request):
 
 def start_search(request):
     vol_array = range(1,91)
-    return render(request, 'search.html', {'vol_array':vol_array})
+    years = set()
+    for works in Works.objects.all():
+        if works.date != None and works.date != '?' and works.date!='0':
+            years.add(works.date)
+    return render(request, 'search.html', {'vol_array':vol_array, 'years': sorted(years)})
 
 def all_files_download(request, tag):
     """
@@ -51,3 +55,24 @@ def all_files_download(request, tag):
     response = HttpResponse(my_file, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=%s' % dic_of_docs[str(tag)]
     return response
+
+
+def search_big(request):
+    """
+
+    :param request:
+    """
+    if request.method == "POST":
+
+        if request.POST.get('search_big_input'):
+            print('BIG search')
+            results = []
+            return render(request, 'text_search_out.html', {'res_docs': results})
+        else:
+            print('Meta search!')
+            docs = []
+            return render(request, 'meta_search_out.html', {'res_docs': docs})
+
+def simple_search(request):
+    data = [[]]
+    return render(request, 'text_search_out.html', {'res_data': data})
