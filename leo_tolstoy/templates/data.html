@@ -14,38 +14,41 @@
 
             <div class="container-fluid">
 
-            <div class="row"><form action="#" class="search_icon">
-            <div class="col-sm-12">
-            <div class="input-group">
-              <input id="query" type="text" class="form-control" placeholder="Найти документ">
-              <span class="input-group-btn">
-                <button id='search_ok' class="btn vol_button" type="submit">Ок!</button>
-              </span>
+            <div class="row">
+             <form id="search_doc" action="{% url 'find_doc' %}" method="POST" class="search_icon">
+                {% csrf_token %}
+                    <div class="col-sm-12">
+                    <div class="input-group">
+                      <input id="query" name='query' type="text" class="form-control" placeholder="Найти документ">
+                      <span class="input-group-btn">
+                        <button id='search_ok' class="btn vol_button" type="submit">Ок!</button>
+                      </span>
+                    </div>
+                    </div>
+            </form>
             </div>
-            </div>
-            </form></div>
 
             <div>
             <h1>Творчество Льва Толстого</h1>
             </div>
             <div class="col-sm-12">
 
-                <button id="all" class="btn mybutton"><a href="#">Всё</a></button>
-                <button id="chud" class="btn mybutton"><a href="#">Художественная литература</a></button>
-                <button id="volums" class="btn mybutton"><a href="">90-томное собрание сочинений</a></button>
-                <button id="public" class="btn mybutton"><a href="">Публицистика</a></button>
-                <button id="diaries" class="btn mybutton"><a href="">Дневники</a></button>
+                <a href="{% url 'show_data' %}"><button id="all" class="btn mybutton">Всё</button></a>
+                <a href="{% url 'chud' %}"><button id="chud" class="btn mybutton">Художественная литература</button></a>
+                <a href="{% url 'volums' %}"><button id="volums" class="btn mybutton">90-томное собрание сочинений</button></a>
+                <a href="{% url 'public' %}"><button id="public" class="btn mybutton">Публицистика</button></a>
+                <a href="{% url 'diaries' %}"><button id="diaries" class="btn mybutton">Дневники</button></a>
             </div>
             <div class="col-sm-12">
-                <button id="letters" class="btn mybutton"><a href="">Письма</a></button>
-                <button id="children" class="btn mybutton"><a href="">Детская литература</a></button>
-                <button id="church" class="btn mybutton"><a href="">Церковно-богословская литература</a></button>
+                <a href="{% url 'letters' %}"><button id="letters" class="btn mybutton">Письма</button></a>
+                <a href="{% url 'children' %}"><button id="children" class="btn mybutton">Детская литература</button></a>
+                <a href="{% url 'church' %}"><button id="church" class="btn mybutton">Церковно-богословская литература</button></a>
 
             </div>
             </div>
 
 
-            <div id="volms" class="container-fluid" style="display:none">
+            <div id="volms" class="container-fluid">
 
                 <p></p>
 
@@ -70,18 +73,41 @@
                 </div>
                 <p></p>
 
+
+
+
                 {% for work in works %}
 
-                <div class="col-sm-3 one_doc {{work.sphere}}">
+                   <div class="col-sm-3 one_doc {{work.sphere}}">
 
                    <a href="./data/download/{{work.filename}}" target="_blank">
                    <img id="one_doc" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
                    <p class="one_work">{{work.name}}</p>
-
                    </a>
-                </div>
 
+                   </div>
                 {% endfor %}
+
+
+                {% if works.paginator %}
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if works.has_previous %}
+                                <a href="?page={{ works.previous_page_number }}"><< </a>
+                            {% endif %}
+
+                            <span class="current">
+                                Страница {{ works.number }} из {{ works.paginator.num_pages }}
+                            </span>
+
+                            {% if works.has_next %}
+                                <a href="?page={{ works.next_page_number }}"> >></a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                {% endif %}
 
             </div>
 
