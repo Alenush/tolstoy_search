@@ -7,6 +7,9 @@ urlpatterns = [
     url(r'data/$', views.show_data, name='show_data'),
     url(r'search/$', views.start_search, name='search_main'),
 
+    url(r'^simple_search/$', views.simple_search, name='simple_search'),
+    url(r'^searching/$', views.search_big, name='all_search'),
+
     url(r'data/volums/$', views.show_volums, name='volums'),
     url(r'data/public/$', views.show_public, name='public'),
     url(r'data/diaries/$', views.show_diaries, name='diaries'),
@@ -18,7 +21,4 @@ urlpatterns = [
     url(r'data/result/$', views.find_doc, name='find_doc'),
 
     url(r'data/download/(?P<tag>.+)/$', views.all_files_download, name='files_download'),
-
-    url(r'^searching/$', views.search_big, name='all_search'),
-    url(r'^simple_search/$', views.simple_search, name='lemma_search'),
 ]
