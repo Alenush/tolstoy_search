@@ -12,64 +12,59 @@
     <div class="col-sm-12">
 
 
-        <h4 style="text-align:left">Всего найдено {{ match }} совпадений.</h4>
-        <h4><i>Запрос: {{ query }}</i></h4>
+        <h4 style="text-align:left">Всего найдено <b>{{ match }}</b> совпадений.В <b>{{ len }}</b> документах.</h4>
+        <h4 style="text-align:left"><i>Запрос: <b>{{ query }}</b></i></h4>
 
+        {% if len != 0 %}
+
+            {% for name, paragraph, volum, source in res_docs %}
         <div class="col-sm-12 results_out">
 
             <div class="col-sm-10">
-                <h2><a href="#">Произведение</a></h2>
-                <p><a href="#">кусочек текста как ссылка.кусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылка кусочек текста как ссылка. кусочек текста как ссылка</a></p>
+                <h2><a href="#">{{ name }}</a></h2>
+                <p><a href="#">{{ paragraph }}</a></p>
             </div>
             <div class="col-sm-2">
-                <h4>Том 1</h4>
-                <button type="button" class="btn head_search">Cite</button>
+                <h4>Том №{{ volum }}</h4>
+                <button type="button" class="btn head_search"
+                 data-toggle="modal" data-target="#myModal{{forloop.counter0}}">Cite</button>
             </div>
         </div>
 
 
-        <div class="col-sm-12 results_out">
-            <div class="col-sm-10">
-                <h2><a href="#">Произведение</a></h2>
-                <p><a>кусочек текста как ссылка</a></p>
-            </div>
-            <div class="col-sm-2">
-                <h4>Том 1</h4>
-                <button type="button" class="btn head_search">Cite</button>
-            </div>
+          <div class="modal fade" id="myModal{{forloop.counter0}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Процитировать</h4>
+              </div>
+              <div class="modal-body">
+                {{source}}
+              </div>
+              <div class="modal-footer">
 
+                <!--<button type="button" class="btn btn-warning" id="copy-button" data-clipboard-target="#post-shortlink">Копировать</button>-->
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        {% else %}
+
+        <hr>
+        <div style="padding:2em">
+
+            <h4>Ничего не нашлось =(</h4>
         </div>
 
-
-
-        <div class="col-sm-12 results_out">
-
-            <div class="col-sm-10">
-                <h2><a href="#">Произведение</a></h2>
-                <p><a href="#">кусочек текста как ссылка.кусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылка кусочек текста как ссылка. кусочек текста как ссылка</a></p>
-            </div>
-            <div class="col-sm-2">
-                <h4>Том 1</h4>
-                <button type="button" class="btn head_search">Cite</button>
-            </div>
-        </div>
-
-
-        <div class="col-sm-12 results_out">
-
-            <div class="col-sm-10">
-                <h2><a href="#">Произведение</a></h2>
-                <p><a href="#">кусочек текста как ссылка.кусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылкакусочек текста как ссылка кусочек текста как ссылка. кусочек текста как ссылка</a></p>
-            </div>
-            <div class="col-sm-2">
-                <h4>Том 1</h4>
-                <button type="button" class="btn head_search">Cite</button>
-            </div>
-        </div>
-
-
-    </div>
-
+        {% endif %}
 
 </div>
 </div></div>

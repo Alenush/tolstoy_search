@@ -3,9 +3,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import os
-import zipfile
+from BeautifulSoup import BeautifulStoneSoup
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import codecs
+import sys
+streamWriter = codecs.lookup('utf-8')[-1]
+sys.stdout = streamWriter(sys.stdout)
 
 from leo_tolstoy.models import Works
 
@@ -106,7 +110,8 @@ def start_search(request):
     years = set()
     for works in Works.objects.all():
         if works.date != None and works.date != '?' and works.date!='0':
-            years.add(works.date)
+            if type(works.date)!='unicode':
+                years.add(works.date)
     return render(request, 'search.html', {'vol_array':vol_array, 'years': sorted(years)})
 
 def all_files_download(request, tag):
@@ -219,24 +224,53 @@ def query_process(request):
     return '; '.join(query_out), new_results
 
 
-def search_in_current_docs():
+def parse_xml_doc(new_path, query):
+    query_paragraphs = []
+    pages = []
+    with codecs.open(new_path, 'r') as one_doc:
+        xml_document = one_doc.read()
+        soup = BeautifulStoneSoup(xml_document, convertEntities=BeautifulStoneSoup.XML_ENTITIES)
+        paragraphs = soup.findAll('p')
+        for par in paragraphs:
+            if query in par.contents[0]:
+                query_paragraphs.append(par.contents[0])
+                my_page = par.find('span',{"class": "opnumber"})
+                if my_page != None:
+                    pages.append(my_page.contents[0])
+    return query_paragraphs, pages
+
+def search_in_current_docs(docs, text_query):
     """We have a set of documents in which to find text.
     Parse only these docs and catch the text"""
-
-    return []
+    results = []
+    all_items = 0
+    for doc in docs:
+        for root, dirs, filenames in os.walk(os.getcwd() + '/leo_tolstoy/xml_data/'):
+            for fname in filenames:
+                if doc.filename == fname:
+                    new_path = os.path.join(root, fname)
+                    my_doc, pages = parse_xml_doc(new_path, text_query)
+                    if len(my_doc) > 0:
+                        length = len(my_doc)
+                        paragraph = my_doc[-1]
+                        all_items += length
+                        cite = u'"'+doc.name + u'. "' + doc.source[:-1] + u', стр. ' + pages[-1]
+                        results.append((doc.name, paragraph, doc.value, cite))
+    return results, all_items
 
 def search_big(request):
 
     if request.method == "POST":
 
         query_out, docs = query_process(request)
-
-        if request.POST.get('search_big_input'):
+        text_query = request.POST.get('search_big_input')
+        if text_query:
             print('BIG search')
-            results = search_in_current_docs()
+            results, all_count = search_in_current_docs(docs, text_query)
             return render(request, 'text_search_out.html', {'res_docs': results,
-                                                            'match': 5,
-                                                            'query':query_out})
+                                                            'match': all_count,
+                                                            'len': len(results),
+                                                            'query': query_out})
         else:
             print('Meta search!')
             return render(request, 'meta_search_out.html', {'res_docs': docs,
