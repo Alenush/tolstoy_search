@@ -24,3 +24,24 @@ class Works(models.Model):
 
     def __str__(self):
         return self.name
+
+class MyUser(models.Model):
+    message = models.CharField(max_length=200)
+    email = models.EmailField()
+
+class LemmasInverseTable(models.Model):
+    lemma = models.CharField(db_index=True,max_length=200)
+    documents = models.TextField(db_index=True,)
+
+class TolstoyTexts(models.Model):
+    filename = models.CharField(db_index=True,max_length=200)
+    page = models.IntegerField()
+    paragraphs = models.TextField(db_index=True)
+
+class Letters(models.Model):
+    path = models.CharField(db_index=True,max_length=200)
+    volum = models.CharField(max_length=20)
+    author = models.CharField(max_length=20)
+    name = models.CharField(db_index=True,max_length=200)
+    year = models.IntegerField(db_index=True,null=True)
+    source = models.CharField(db_index=True,max_length=200, null=True)

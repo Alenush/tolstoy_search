@@ -5,14 +5,13 @@
     <title>Толстой поиск</title>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/main_style.css' /%}">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
 </head>
 {% load staticfiles %}
-<body style="background:url({% static 'leo_tolstoy/images/field_bg.jpg' %}) no-repeat 100%;">
+<body style="background:url({% static 'leo_tolstoy/images/mybook.jpeg' %}) no-repeat 100%; background-size: cover;">
 
 <div class="site-wrapper">
 
@@ -20,23 +19,12 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h1>Лев Толстой</h1>
+            <div class="col-xs-12 col-sm-12 info-block">
 
-                    <!--<div class="input-icon">-->
-                        <!--<span class="fa fa-info" aria-hidden="true">?</span>-->
-                    <!--</div>-->
+                 <h1 style="padding-bottom:1em">Лев Толстой</h1>
 
-                </div>
-            </div>
-
-          <div class="container-fluid">
-          <div class="row">
-          <div class="col-sm-12">
-          <div class="inner cover">
-
-              <div class="col-xs-12 col-sm-5 info-block">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
 
                 <a href="{% url 'show_data' %}">
                     <h2>Произведения писателя</h2>
@@ -44,9 +32,7 @@
                 </a>
 
               </div>
-              <div class="col-xs-12 col-sm-2"></div>
-
-              <div class="col-xs-12 col-sm-5 info-block">
+              <div class="col-xs-12 col-sm-6">
 
                 <a href="{% url 'search_main' %}">
                     <h2>Поиск по произведениям</h2>
@@ -54,10 +40,28 @@
                 </a>
 
                </div>
-              </div>
-          </div>
-          </div>
-          </div>
+            </div>
+
+                <div id='myglyphicon' class="row" style="margin-top:4em">
+                <span class="glyphicon glyphicon-heart" style="cursor:pointer" aria-hidden="true"></span>
+               </div>
+
+           <div id="myform" style="display:none">
+
+               <form action="{% url 'feedback' %}" method="POST">
+                   {% csrf_token %}
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name='email' class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleTextarea">Сообщение</label>
+                    <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
+                  </div>
+                  <button type="submit" id="clickme" style="color:black">OK</button>
+               </form>
+               <div class="thanks"></div>
+           </div>
 
           <div class="mastfoot">
             <div class="inner">
@@ -71,9 +75,37 @@
       </div>
 
     </div>
+</div>
 
+<script type="text/javascript" src="{% static 'leo_tolstoy/bootstrap/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'leo_tolstoy/js/search.js' %}"></script>
 
+ {% block javascript %}
+<script>
+    $("#email").change(function () {
 
+        var email = $(this).val();
+        console.log(email);
+      $.ajax({
+            url: '{% url "ajax_call" %}',
+            data: {
+              'email': email
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log("SUCCESS");
+                if (data.is_taken) {
+                    alert("Ой. Вы нам уже писали сообщение. Хотите ещё? ;)");
+                    }
+                else{
+                    console.log('BAD');
+                }
+            }
+      });
+
+    });
+  </script>
+{% endblock %}
 
 </body>
 </html>

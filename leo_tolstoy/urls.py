@@ -21,4 +21,7 @@ urlpatterns = [
     url(r'data/result/$', views.find_doc, name='find_doc'),
 
     url(r'data/download/(?P<tag>.+)/$', views.all_files_download, name='files_download'),
+
+    url(r'^ajax/ajax_test/$', views.ajax_test, name='ajax_call'),
+    url(r'/$', views.feedback_save, name='feedback'),
 ]

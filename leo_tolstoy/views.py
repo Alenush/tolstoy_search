@@ -1,17 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import os
 from BeautifulSoup import BeautifulStoneSoup
+from django.http import JsonResponse
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import codecs
 import sys
+
 streamWriter = codecs.lookup('utf-8')[-1]
 sys.stdout = streamWriter(sys.stdout)
 
-from leo_tolstoy.models import Works
+from leo_tolstoy.models import Works, Letters
+from leo_tolstoy.models import MyUser, TolstoyTexts
 
 
 def index(request):
@@ -134,7 +137,15 @@ def all_files_download(request, tag):
                     new_tag = new_path.split('/')[-2:]
                     dic_of_docs[tag] = '/'.join(new_tag)
                 else:
-                    print('WTF', tag, os.path.split(filename)[-1].decode('utf-8'))
+                    # если письма
+                    all_str = tag.split('.')[0]
+                    sub = os.path.split(filename)[-1].decode('utf-8').split('.')[0]
+                    candidates = []
+                    if sub in all_str and len(sub)>3:
+                          candidates.append(sub+'.xhtml')
+                    if len(candidates) > 0:
+                        volum = root.split('/')[-1]
+                        dic_of_docs[tag] = volum+'/'+max(candidates)
         elif 'vol' in tag:
             for filename in filenames:
                 if 'zip' in filename:
@@ -154,7 +165,6 @@ def simple_search(request):
     print('!!!')
     if request.method == "POST":
         simple_search = request.POST.get('search_input')
-        print(simple_search)
         data = [[]]
         return render(request, 'text_search_out.html', {'res_data': data})
 
@@ -254,25 +264,50 @@ def search_in_current_docs(docs, text_query):
                         length = len(my_doc)
                         paragraph = my_doc[-1]
                         all_items += length
-                        cite = u'"'+doc.name + u'. "' + doc.source[:-1] + u', стр. ' + pages[-1]
+                        try:
+                            cite = u'"'+doc.name + u'. "' + doc.source[:-1] + u', стр. ' + pages[-1]
+                        except:
+                            cite = u'"' + doc.name + u'. "' + doc.source[:-1]
                         results.append((doc.name, paragraph, doc.value, cite))
     return results, all_items
 
 def search_big(request):
 
     if request.method == "POST":
-
         query_out, docs = query_process(request)
         text_query = request.POST.get('search_big_input')
         if text_query:
-            print('BIG search')
-            results, all_count = search_in_current_docs(docs, text_query)
-            return render(request, 'text_search_out.html', {'res_docs': results,
-                                                            'match': all_count,
-                                                            'len': len(results),
-                                                            'query': query_out})
+                print('BIG search')
+                results, all_count = search_in_current_docs(docs, text_query)
+                return render(request, 'text_search_out.html', {'res_docs': results,
+                                                                'match': all_count,
+                                                                'len': len(results),
+                                                                'query': query_out})
         else:
-            print('Meta search!')
-            return render(request, 'meta_search_out.html', {'res_docs': docs,
-                                                            'query': query_out,
-                                                            'len': len(docs)})
+            if request.POST.get('format') == 'meta':
+                print('Meta search!')
+                return render(request, 'meta_search_out.html', {'res_docs': docs,
+                                                                'query': query_out,
+                                                                'len': len(docs)})
+            else:
+                return redirect('/tolstoy/search/')
+
+def ajax_test(request):
+        print('Hi!')
+        email = request.GET.get('email', None)
+        print('Ajax', email)
+        taken = MyUser.objects.filter(email__iexact=email).exists()
+        data = {'is_taken': taken}
+        if data['is_taken']:
+            data['error_message'] = 'Вы уже писали сообщение. Нам хватит =Р'
+        return JsonResponse(data)
+
+
+def feedback_save(request):
+    if request.POST:
+        message = request.POST['message']
+        email = request.POST['email']
+        user_back = MyUser(message=message, email=email)
+        user_back.save()
+        print("Save object")
+        return redirect('/tolstoy/')
