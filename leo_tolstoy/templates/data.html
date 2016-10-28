@@ -56,8 +56,8 @@
                 <div class="col-sm-3 one_doc one_volum">
 
                    <a href="./data/download/vol{{vol}}" target="_blank">
-                   <img id="one_vol" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
-                   <p id="vol_{{vol}}">Том {{vol}}</p>
+                   <img class="one_vol" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
+                   <p class="vol_{{vol}}">Том {{vol}}</p>
 
                    </a>
 
@@ -81,7 +81,7 @@
                    <div class="col-sm-3 one_doc {{work.sphere}}">
 
                    <a href="./data/download/{{work.filename}}" target="_blank">
-                   <img id="one_doc" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
+                   <img class="doc" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
                    <p class="one_work">{{work.name}}</p>
                    </a>
 
