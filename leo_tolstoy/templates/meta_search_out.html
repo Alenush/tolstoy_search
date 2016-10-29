@@ -15,16 +15,37 @@
 
         <div class="col-sm-12 doc_results">
 
-            <h4>Запрос:<b> {{ query }}</b></h4>
+            <h4>Запрос:<i> {{ query }}</i></h4>
             <h4>Всего найдено <b>{{ len }}</b> документов.</h4>
             <hr>
 
 
             {% for doc in res_docs %}
-                <h4 style="padding-bottom:1em">
+            <h4 style="padding-bottom:1em">
                     <span class="glyphicon glyphicon-ok" style="color:#4285F4;"></span>
-                    {{ doc.name }}</h4>
+                    <b>{{ doc.name }}</b>. <span style="align:right"> {{ doc.source }} </span> </h4>
             {% endfor %}
+
+
+             <!--{% if res_docs.paginator %}-->
+
+                    <!--<div class="pagination">-->
+                        <!--<span class="step-links">-->
+                            <!--{% if res_docs.has_previous %}-->
+                                <!--<a href="?page={{ res_docs.previous_page_number }}"><< </a>-->
+                            <!--{% endif %}-->
+
+                            <!--<span class="current">-->
+                                <!--Страница {{ res_docs.number }} из {{ res_docs.paginator.num_pages }}-->
+                            <!--</span>-->
+
+                            <!--{% if res_docs.has_next %}-->
+                                <!--<a href="?page={{ res_docs.next_page_number }}"> >></a>-->
+                            <!--{% endif %}-->
+                        <!--</span>-->
+                    <!--</div>-->
+
+                <!--{% endif %}-->
 
         </div>
 

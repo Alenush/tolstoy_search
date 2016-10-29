@@ -62,83 +62,93 @@
               </div>
 
 
+              <div class="col-sm-12">
                     <div class="col-sm-4">
 
-                  <div id='place' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Место действия</div>
-                    <select name="place" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="Европа" class="form-control">Европа</option>
-                      <option value="Россия" class="form-control">Россия</option>
-                      <option value="Россия, Европа" class="form-control">Европа и Россия</option>
-                    </select>
-                  </div></div>
+                          <div id='place' class="place">
+                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                            <div class="head_search form-control">Место действия</div>
+                            <select name="place" class="form-control">
+                              <option value="none" class="form-control">-</option>
+                              <option value="Европа" class="form-control">Европа</option>
+                              <option value="Россия" class="form-control">Россия</option>
+                              <option value="Россия, Европа" class="form-control">Европа и Россия</option>
+                            </select>
+                          </div></div>
 
 
-                  <div id='finish' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Законченность</div>
-                    <select name="finish" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="finished" class="form-control">Законченное</option>
-                      <option value="not finished" class="form-control">Незаконченное</option>
-                    </select>
-                  </div></div>
+                          <div id='finish' class="place">
+                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                            <div class="head_search form-control">Законченность</div>
+                            <select name="finish" class="form-control">
+                              <option value="none" class="form-control">-</option>
+                              <option value="finished" class="form-control">Законченное</option>
+                              <option value="not finished" class="form-control">Незаконченное</option>
+                            </select>
+                          </div></div>
+
+                          <div id='orpho' class="place">
+                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                            <div class="head_search form-control">Орфография</div>
+                            <select name="orpho" class="form-control">
+                              <option value="none" class="form-control">-</option>
+                              <option value="new" class="form-control">Новая</option>
+                              <option value="old" class="form-control">Старая</option>
+                            </select>
+                          </div></div>
 
                     </div>
 
 
-                <div id='time' class="place">
                   <div class="col-sm-8" style="text-align:left; padding:2em; float: left">
                       <div class="head_search form-control">Время написания</div>
 
-                      <div class="col-sm-3">
+                        <div class="col-sm-3">
 
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <button id="but3040" type="button" class="btn vol_button form-control">
-                            1830-1850</button>
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <button id="but5070" type="button" class="btn vol_button form-control">
-                            1850-1870</button>
-                          </label>
-                        </div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <button id="but70" type="button" class="btn vol_button form-control" >
-                            1871-1880</button>
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <button id="but80" type="button" class="btn vol_button form-control">
-                            1881-1890</button>
-                          </label>
-                        </div>
-                        <div class="form-check ">
-                          <label class="form-check-label">
-                            <button id="but90" type="button" class="btn vol_button form-control" >
-                            1890  и позже</button>
-                          </label>
-                        </div>
-                  </div>
-                  <div class="col-sm-8 checks">
+                              <div class="form-check">
+                                  <label class="form-check-label">
+                                    <button id="but3040" type="button" class="btn vol_button form-control">
+                                    1830-1850</button>
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <button id="but5070" type="button" class="btn vol_button form-control">
+                                    1850-1870</button>
+                                  </label>
+                                </div>
+                              <div class="form-check">
+                                  <label class="form-check-label">
+                                    <button id="but70" type="button" class="btn vol_button form-control" >
+                                    1871-1880</button>
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <button id="but80" type="button" class="btn vol_button form-control">
+                                    1881-1890</button>
+                                  </label>
+                                </div>
+                                <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <button id="but90" type="button" class="btn vol_button form-control" >
+                                    1890  и позже</button>
+                                  </label>
+                                </div>
+                          </div>
+                          <div class="col-sm-8 checks">
 
-                   {% for year in years %}
-                  <div class="col-sm-3" style="display:none">
-                  <label class="checkbox_year">
+                               {% for year in years %}
+                              <div class="col-sm-3" style="display:none">
+                              <label class="checkbox_year">
 
-                        <input type="checkbox" class="btn checkbox_year" name="year" value="{{ year }}">
-                        {{ year }}
-                        </label>
-                  </div>
-                   {% endfor %}
+                                    <input type="checkbox" class="btn checkbox_year" name="year" value="{{ year }}">
+                                    {{ year }}
+                                    </label>
+                              </div>
+                               {% endfor %}
 
-                  </div>
+                           </div>
 
                   </div>
                   </div>
@@ -543,7 +553,7 @@
                       {% for number in vol_array %}
                       <div class="col-sm-1 form-check">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="volum" value="vol_{{number}}">
+                            <input type="checkbox" class="form-check-input" name="volum" value="{{number}}">
                             {{number}}
                           </label>
                         </div>

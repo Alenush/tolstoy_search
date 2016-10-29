@@ -7,11 +7,6 @@
         <div id="container" class="content">
 
 
-            <!--<div class="search_icon">-->
-            <!--<img id="show_search" src="{% static 'leo_tolstoy/images/search_data.png' %}"-->
-                 <!--style="cursor:pointer; padding:1em">-->
-            <!--</div>-->
-
             <div class="container-fluid">
 
             <div class="row">
@@ -55,7 +50,7 @@
                 {% for vol in volums %}
                 <div class="col-sm-3 one_doc one_volum">
 
-                   <a href="./data/download/vol{{vol}}" target="_blank">
+                   <a href="./data/download/{{vol}}" target="_blank">
                    <img class="one_vol" src="{% static 'leo_tolstoy/images/note.png' %}" style="cursor:pointer; padding:1em">
                    <p class="vol_{{vol}}">Том {{vol}}</p>
 
@@ -66,15 +61,16 @@
 
             </div>
 
-            <div id="all_works" class="container-fluid">
+            <div id="all_works" class="container-fluid all_works">
+
+                {% if check == 1 %}
 
                 <div id="download_all" style="padding:2em">
                 <a href="{% url 'files_download' tag='all' %}" target="_blank"><button class="btn head_search">Скачать все произведения одним файлом</button></a>
                 </div>
                 <p></p>
 
-
-
+                {% endif %}
 
                 {% for work in works %}
 

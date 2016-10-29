@@ -215,7 +215,6 @@ body {
 
 .one_doc p{
     color: black;
-
 }
 
 /* Up button */
@@ -260,4 +259,8 @@ a.back-to-top {
     color: black;
     margin-bottom: 2em;
     text-align: left;
+}
+
+.all_works {
+    padding-bottom: 2em;
 }

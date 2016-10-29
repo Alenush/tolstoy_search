@@ -9,11 +9,12 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import codecs
 import sys
+import pprint
 
 streamWriter = codecs.lookup('utf-8')[-1]
 sys.stdout = streamWriter(sys.stdout)
 
-from leo_tolstoy.models import Works, Letters
+from leo_tolstoy.models import OriginalWorks, TeiWorks
 from leo_tolstoy.models import MyUser, TolstoyTexts
 
 
@@ -21,8 +22,8 @@ def index(request):
     return render(request, 'index.html')
 
 def show_data(request):
-    all_works = Works.objects.all()
-    paginator = Paginator(all_works, 100)
+    all_works = TeiWorks.objects.all()
+    paginator = Paginator(all_works, 20)
     page = request.GET.get('page')
     try:
          my_works = paginator.page(page)
@@ -30,13 +31,13 @@ def show_data(request):
         my_works = paginator.page(1)
     except EmptyPage:
         my_works = paginator.page(paginator.num_pages)
-    return render(request, 'data.html', {"works":my_works, 'volums':[]})
+    return render(request, 'data.html', {"works":my_works, 'volums':[], 'check':1})
 
 def show_chudozh(request):
     chudozh = set()
-    for works in Works.objects.filter(sphere='художественная'):
+    for works in TeiWorks.objects.filter(sphere='художественная'):
         chudozh.add(works)
-    paginator = Paginator(list(chudozh), 60)
+    paginator = Paginator(list(chudozh), 20)
     page = request.GET.get('page')
     try:
         chud_works = paginator.page(page)
@@ -49,15 +50,15 @@ def show_chudozh(request):
 
 def show_volums(request):
     volums = set()
-    for works in Works.objects.all():
+    for works in TeiWorks.objects.all():
         volums.add(works.value)
     return render(request, 'data.html', {"works": [], 'volums': volums})
 
 def show_public(request):
     public = set()
-    for works in Works.objects.filter(sphere='публицистика'):
+    for works in TeiWorks.objects.filter(sphere='публицистика'):
         public.add(works)
-    paginator = Paginator(list(public), 60)
+    paginator = Paginator(list(public), 20)
     page = request.GET.get('page')
     try:
         public_works = paginator.page(page)
@@ -69,33 +70,33 @@ def show_public(request):
 
 def show_diaries(request):
     diaries = set()
-    for works in Works.objects.filter(sphere='дневники и записные книжки'):
+    for works in TeiWorks.objects.filter(sphere='дневники и записные книжки'):
         diaries.add(works)
     return render(request, 'data.html', {"works": diaries})
 
 def show_letters(request):
     letters = set()
-    for works in Works.objects.filter(sphere='Личная и деловая переписка'):
+    for works in TeiWorks.objects.filter(sphere='Личная и деловая переписка'):
         letters.add(works)
-    paginator = Paginator(list(letters), 100)
-    page = request.GET.get('page')
-    try:
-        letters_works = paginator.page(page)
-    except PageNotAnInteger:
-        letters_works = paginator.page(1)
-    except EmptyPage:
-        letters_works = paginator.page(paginator.num_pages)
-    return render(request, 'data.html', {"works": letters_works})
+    # paginator = Paginator(list(letters), 20)
+    # page = request.GET.get('page')
+    # try:
+    #     letters_works = paginator.page(page)
+    # except PageNotAnInteger:
+    #     letters_works = paginator.page(1)
+    # except EmptyPage:
+    #     letters_works = paginator.page(paginator.num_pages)
+    return render(request, 'data.html', {"works": letters})
 
 def show_children(request):
     children = set()
-    for works in Works.objects.filter(sphere='детская литература'):
+    for works in TeiWorks.objects.filter(sphere='детская литература'):
         children.add(works)
     return render(request, 'data.html', {"works": children})
 
 def show_church(request):
     church = set()
-    for works in Works.objects.filter(sphere='Церковно-богословская литература'):
+    for works in TeiWorks.objects.filter(sphere='Церковно-богословская литература'):
         church.add(works)
     return render(request, 'data.html', {"works": church})
 
@@ -103,15 +104,14 @@ def find_doc(request):
     search_works = set()
     if request.method == "POST":
         query = request.POST.get('query')
-        print('REQUEST', query)
-        for works in Works.objects.filter(name__contains=query):
+        for works in TeiWorks.objects.filter(name__contains=query.upper()):
             search_works.add(works)
     return render(request, 'data.html', {"works": search_works})
 
 def start_search(request):
     vol_array = range(1,91)
     years = set()
-    for works in Works.objects.all():
+    for works in OriginalWorks.objects.all():
         if works.date != None and works.date != '?' and works.date!='0':
             if type(works.date)!='unicode':
                 years.add(works.date)
@@ -121,44 +121,24 @@ def all_files_download(request, tag):
     """
     Download xml files
     :param tag: all, vol_n, file
-    :return:
     """
-    dic_of_docs = {'all':'xml_data.zip'}
+    dic_of_docs = {'all':'tei_data.zip'}
     for folder in os.listdir(os.path.realpath(os.getcwd())+'/leo_tolstoy/xml_data/'):
         if folder.endswith('zip'):
             vol = folder.split('.')[0].replace('_','')
             dic_of_docs[vol] = folder
     global path_to_file
     for root, dirs, filenames in os.walk(os.getcwd()+'/leo_tolstoy/xml_data/'):
-        if 'xhtml' in tag:
+        if 'xml' in tag:
             for filename in filenames:
                 if os.path.split(filename)[-1].decode('utf-8') == tag:
                     new_path = os.path.join(root, filename)
                     new_tag = new_path.split('/')[-2:]
                     dic_of_docs[tag] = '/'.join(new_tag)
-                else:
-                    # если письма
-                    all_str = tag.split('.')[0]
-                    sub = os.path.split(filename)[-1].decode('utf-8').split('.')[0]
-                    candidates = []
-                    if sub in all_str and len(sub)>3:
-                          candidates.append(sub+'.xhtml')
-                    if len(candidates) > 0:
-                        volum = root.split('/')[-1]
-                        dic_of_docs[tag] = volum+'/'+max(candidates)
-        elif 'vol' in tag:
-            for filename in filenames:
-                if 'zip' in filename:
-                    new_tag = tag.split('vol')[1]
-                    if new_tag+'.zip' == filename or new_tag+'_.zip' == filename:
-                        dic_of_docs[tag] = filename
-                        print('!', filename)
-        else:
-            print('BAD!', tag)
     path_to_file = os.path.dirname(os.path.realpath(__file__)) + "/xml_data/"
     my_file = open(path_to_file+dic_of_docs[tag], 'r')
     response = HttpResponse(my_file, content_type='application/force-download')
-    response['Content-Disposition'] = 'attachment; filename=%s' % dic_of_docs[tag]
+    response['Content-Disposition'] = 'attachment; filename=%s.xml' % dic_of_docs[tag]
     return response
 
 def simple_search(request):
@@ -169,15 +149,15 @@ def simple_search(request):
         return render(request, 'text_search_out.html', {'res_data': data})
 
 
-def query_process(request):
+def query_process(request, source=OriginalWorks):
     """
     Process query and return string of Query and results objects
-    :param request:
     :return: query_out - string,
     """
     whole_query = {}
     place = request.POST.get('place')
     finish = request.POST.get('finish')
+    orpho = request.POST.get('orpho')
     year = request.POST.getlist('year')
     century = request.POST.getlist('century')
     sphere = request.POST.getlist('sphere')
@@ -188,6 +168,7 @@ def query_process(request):
 
     whole_query[u"Место"] = (place,'place')
     whole_query[u'Законченность'] = (finish, 'finish')
+    whole_query[u'Орфография'] = (orpho, 'orpho')
     whole_query[u'Время написания'] = (year, 'year')
     whole_query[u'Время повествования'] = (century, 'century')
     whole_query[u'Сфера'] = (sphere, 'sphere')
@@ -211,12 +192,14 @@ def query_process(request):
                 new_value = value[0]
             query_out.append(key + ': ' + new_value)
     # Если человек не нажал значит, ему это не интересно. Не смотреть такие случаи вообще
-    new_results = Works.objects.all()
+    new_results = source.objects.all()
     for key, val in whole_query.items():
         if val[0] != 'none' and val[1] == 'place':
             new_results = new_results.filter(place=place)
         elif val[0] != 'none' and val[1] == 'finish':
             new_results = new_results.filter(finished=finish)
+        elif val[0] != 'none' and val[1] == 'orpho':
+            new_results = new_results.filter(orpho=orpho)
         elif val[0] != [] and val[1] == 'year':
             new_results = new_results.filter(date__in=year)
         elif val[0] != [] and val[1] == 'century':
@@ -244,7 +227,7 @@ def parse_xml_doc(new_path, query):
         for par in paragraphs:
             if query in par.contents[0]:
                 query_paragraphs.append(par.contents[0])
-                my_page = par.find('span',{"class": "opnumber"})
+                my_page = par.find('span', {"class": "opnumber"})
                 if my_page != None:
                     pages.append(my_page.contents[0])
     return query_paragraphs, pages
@@ -274,16 +257,17 @@ def search_in_current_docs(docs, text_query):
 def search_big(request):
 
     if request.method == "POST":
-        query_out, docs = query_process(request)
         text_query = request.POST.get('search_big_input')
         if text_query:
-                print('BIG search')
-                results, all_count = search_in_current_docs(docs, text_query)
-                return render(request, 'text_search_out.html', {'res_docs': results,
+            query_out, docs = query_process(request, source=TeiWorks)
+            print('BIG search')
+            results, all_count = search_in_current_docs(docs, text_query)
+            return render(request, 'text_search_out.html', {'res_docs': results,
                                                                 'match': all_count,
                                                                 'len': len(results),
                                                                 'query': query_out})
         else:
+            query_out, docs = query_process(request, source=OriginalWorks)
             if request.POST.get('format') == 'meta':
                 print('Meta search!')
                 return render(request, 'meta_search_out.html', {'res_docs': docs,
@@ -293,7 +277,6 @@ def search_big(request):
                 return redirect('/tolstoy/search/')
 
 def ajax_test(request):
-        print('Hi!')
         email = request.GET.get('email', None)
         print('Ajax', email)
         taken = MyUser.objects.filter(email__iexact=email).exists()
