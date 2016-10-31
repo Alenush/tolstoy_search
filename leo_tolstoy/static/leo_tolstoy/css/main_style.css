@@ -1,6 +1,8 @@
 * {
     font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
 }
+
 
 /*
  * Globals
@@ -139,7 +141,7 @@ body {
   }
   /* Handle the widths */
   .masthead,
-  .mastfoot,
+
   .cover-container {
     width: 100%; /* Must be percentage or pixels for horizontal alignment */
   }
@@ -147,7 +149,7 @@ body {
 
 @media (min-width: 992px) {
   .masthead,
-  .mastfoot,
+
   .cover-container {
     width: 800px;
   }
@@ -156,7 +158,7 @@ body {
 /* Buttons */
 
 .mybutton {
-    background-color: #4285F4;
+    background-color: 5a95f5; /* #4285F4; */
     color: white;
     border: 1px solid #fff;
 }

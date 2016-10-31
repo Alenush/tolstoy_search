@@ -5,17 +5,22 @@ from django.http import HttpResponse
 import os
 from BeautifulSoup import BeautifulStoneSoup
 from django.http import JsonResponse
+import pymorphy2
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import codecs
 import sys
 import pprint
+from string import punctuation
 
 streamWriter = codecs.lookup('utf-8')[-1]
 sys.stdout = streamWriter(sys.stdout)
 
+analyzer = pymorphy2.MorphAnalyzer()
+
 from leo_tolstoy.models import OriginalWorks, TeiWorks
 from leo_tolstoy.models import MyUser, TolstoyTexts
+from leo_tolstoy.models import index_data
 
 
 def index(request):
@@ -117,6 +122,10 @@ def start_search(request):
                 years.add(works.date)
     return render(request, 'search.html', {'vol_array':vol_array, 'years': sorted(years)})
 
+def redirect_to_html(request, link):
+    return render(request, link, {})
+
+
 def all_files_download(request, tag):
     """
     Download xml files
@@ -138,16 +147,8 @@ def all_files_download(request, tag):
     path_to_file = os.path.dirname(os.path.realpath(__file__)) + "/xml_data/"
     my_file = open(path_to_file+dic_of_docs[tag], 'r')
     response = HttpResponse(my_file, content_type='application/force-download')
-    response['Content-Disposition'] = 'attachment; filename=%s.xml' % dic_of_docs[tag]
+    response['Content-Disposition'] = 'attachment; filename=%s' % dic_of_docs[tag]
     return response
-
-def simple_search(request):
-    print('!!!')
-    if request.method == "POST":
-        simple_search = request.POST.get('search_input')
-        data = [[]]
-        return render(request, 'text_search_out.html', {'res_data': data})
-
 
 def query_process(request, source=OriginalWorks):
     """
@@ -232,39 +233,53 @@ def parse_xml_doc(new_path, query):
                     pages.append(my_page.contents[0])
     return query_paragraphs, pages
 
-def search_in_current_docs(docs, text_query):
-    """We have a set of documents in which to find text.
-    Parse only these docs and catch the text"""
+
+def find_lemmas_docs(lemmas):
+    """
+    Takes lemmas. check in db the lists of documents that satisfied the query.
+    Cross these sets. Return the documents objects that satisfied the whole query.
+    :param lemmas: array of lemmas from the query
+    :return: array of documents (path|page|par).
+    """
+    sets = []
+    for lemma in lemmas:
+        one_lemma_set = set()
+        documents = index_data[lemma] # dictionary
+        for doc, page_dic in documents.items():
+            for page, par in page_dic.items():
+                one_lemma_set.add(u"{}|{}|{}".format(doc, page, par))
+        sets.append(one_lemma_set)
+    current_set = sets[0]
+    for one_set in sets[1:]:
+        my_set = current_set & one_set
+        current_set = my_set
+    print("RESULTS", len(current_set))
+    return current_set
+
+def filtered_docs_search(request, lemmas): #NEED TO CHECK
+    valid_docs = find_lemmas_docs(lemmas)
+    query, filters_works = query_process(request, source=TeiWorks)
+
     results = []
-    all_items = 0
-    for doc in docs:
-        for root, dirs, filenames in os.walk(os.getcwd() + '/leo_tolstoy/xml_data/'):
-            for fname in filenames:
-                if doc.filename == fname:
-                    new_path = os.path.join(root, fname)
-                    my_doc, pages = parse_xml_doc(new_path, text_query)
-                    if len(my_doc) > 0:
-                        length = len(my_doc)
-                        paragraph = my_doc[-1]
-                        all_items += length
-                        try:
-                            cite = u'"'+doc.name + u'. "' + doc.source[:-1] + u', стр. ' + pages[-1]
-                        except:
-                            cite = u'"' + doc.name + u'. "' + doc.source[:-1]
-                        results.append((doc.name, paragraph, doc.value, cite))
-    return results, all_items
+    for filt_doc in filters_works:
+        for path_doc in valid_docs:
+            filename = path_doc.split('|')[0]
+            if filt_doc.filename == filename:
+             results.append(path_doc)
+    return results, query
 
 def search_big(request):
 
     if request.method == "POST":
         text_query = request.POST.get('search_big_input')
         if text_query:
-            query_out, docs = query_process(request, source=TeiWorks)
-            print('BIG search')
-            results, all_count = search_in_current_docs(docs, text_query)
-            return render(request, 'text_search_out.html', {'res_docs': results,
-                                                                'match': all_count,
-                                                                'len': len(results),
+            words = [word.strip(punctuation + '- ').lower() for word in text_query.split() if word != '']
+            lemmas = [analyzer.parse(word)[0].normal_form for word in words]
+            valid_docs, query_out = filtered_docs_search(request, lemmas)
+            snippets = [take_data_from_lemma(doc) for doc in valid_docs]
+            return render(request, 'text_search_out.html', {'res_docs': snippets,
+                                                                'match': len(snippets),
+                                                                'len': len(valid_docs),
                                                                 'query': query_out})
         else:
             query_out, docs = query_process(request, source=OriginalWorks)
@@ -294,3 +309,31 @@ def feedback_save(request):
         user_back.save()
         print("Save object")
         return redirect('/tolstoy/')
+
+
+def take_data_from_lemma(doc):
+    """
+    :param doc: path|page|par
+    :return: return only the first paragraph with this page
+    """
+    doc = doc.replace('_NoSameBacknotes','')
+    path, page, index = doc.split('|')
+    good_objects = TolstoyTexts.objects.filter(filename=path, page=page, par_index=index)
+    parag = good_objects[0].paragraphs.replace('$$','\n')
+    html_link = good_objects[0].html_link
+    tei_doc = TeiWorks.objects.filter(filename=path)
+    name = tei_doc[0].name
+    volum = tei_doc[0].value
+    cite = tei_doc[0].source + page
+    return (html_link, name, parag, volum, cite)
+
+def search_lemma(request):
+    query_to_search = request.POST.get('search_input', '')
+    print("Whole", query_to_search)
+    words = [word.strip(punctuation + '- ').lower() for word in query_to_search.split() if word != '']
+    lemmas = [analyzer.parse(word)[0].normal_form for word in words]
+    documents = find_lemmas_docs(lemmas)
+    snippets = [take_data_from_lemma(doc) for doc in documents]
+    return render(request, 'text_search_out.html', {'res_docs': snippets,
+                                                        'query': query_to_search,
+                                                        'len': len(documents)})

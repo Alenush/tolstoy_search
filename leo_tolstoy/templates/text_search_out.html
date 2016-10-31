@@ -17,12 +17,12 @@
 
         {% if len != 0 %}
 
-            {% for name, paragraph, volum, source in res_docs %}
+            {% for html_link, name, paragraph, volum, source in res_docs %}
         <div class="col-sm-12 results_out">
 
             <div class="col-sm-10">
-                <h2><a href="#">{{ name }}</a></h2>
-                <p><a href="#">{{ paragraph }}</a></p>
+                <h2><a href="./result/doc/{{ html_link }}" target="_blank">{{ name }}</a></h2>
+                <p><a href="./result/doc/{{ html_link }}" target="_blank">{{ paragraph }}</a></p>
             </div>
             <div class="col-sm-2">
                 <h4>Том №{{ volum }}</h4>

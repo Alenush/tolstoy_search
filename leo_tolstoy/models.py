@@ -3,6 +3,10 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import json
+
+data_file = open(u'index.json')
+index_data = json.load(data_file)
 
 # Create your models here.
 class OriginalWorks(models.Model):
@@ -63,4 +67,4 @@ class TolstoyTexts(models.Model):
     page = models.IntegerField()
     par_index = models.IntegerField(db_index=True) #индекс параграфа
     paragraphs = models.TextField(db_index=True) # сам параграф
-    html_link = models.CharField(db_index=True,max_length=500)
+    html_link = models.CharField(db_index=True,max_length=500) # html part

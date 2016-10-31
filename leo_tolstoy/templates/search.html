@@ -14,7 +14,7 @@
 
               <h1>Поиск по произведениям Льва Толстого</h1>
 
-              <form action="{% url 'simple_search' %}" method="POST" id="search_form">
+              <form id="search_form" action="{% url 'main_search' %}" method="post">
                   {% csrf_token %}
                   <div class="form-group" style="padding:3em">
                     <label for="search_input"></label>
@@ -44,10 +44,10 @@
 
                                   <div class="switch-toggle switch-ios">
                                     <input id="search_text" value="text" name="format" type="radio" checked>
-                                    <label for="search_text" onclick="">Текстовый поиск</label>
+                                    <label style="font-weight:normal" for="search_text" onclick="">Текстовый поиск</label>
 
                                     <input id="search_meta" value = "meta" name="format" type="radio">
-                                    <label for="search_meta" onclick="">Поиск по метаданным</label>
+                                    <label style="font-weight:normal" for="search_meta" onclick="">Поиск по метаданным</label>
 
                                   <a></a>
                                   </div>
