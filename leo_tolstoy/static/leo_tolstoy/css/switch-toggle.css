@@ -184,7 +184,7 @@
       transition: all 0.12s ease-out; }
     .switch-ios.switch-toggle label {
       height: 2.4em;
-      color: #3333;
+      /*color: #3333;*/
       line-height: 2.4em;
       vertical-align: middle; }
   .switch-ios input:checked + label {

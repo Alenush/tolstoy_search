@@ -10,11 +10,11 @@
             <div class="container-fluid">
 
             <div class="row">
-             <form id="search_doc" action="{% url 'find_doc' %}" method="POST" class="search_icon">
+             <form id="search_doc" action="{% url 'find_doc' %}" method="POST">
                 {% csrf_token %}
-                    <div class="col-sm-12">
+                    <div class="col-xs-12 col-sm-3 col-sm-offset-9">
                     <div class="input-group">
-                      <input id="query" name='query' type="text" class="form-control" placeholder="Найти документ">
+                      <input id="query" name='query' type="text" style="font-size:20pt;height:1.5em" class="form-control" placeholder="Найти документ">
                       <span class="input-group-btn">
                         <button id='search_ok' class="btn vol_button" type="submit">Поиск</button>
                       </span>
@@ -24,7 +24,7 @@
             </div>
 
             <div>
-            <h1>Творчество Льва Толстого</h1>
+            <h1 style="font-size:55px">Творчество Льва Толстого</h1>
             </div>
             <div class="col-sm-12">
 
@@ -32,7 +32,6 @@
                 <a href="{% url 'chud' %}"><button id="chud" class="btn mybutton">Художественная литература</button></a>
                 <a href="{% url 'volums' %}"><button id="volums" class="btn mybutton">90-томное собрание сочинений</button></a>
                 <a href="{% url 'public' %}"><button id="public" class="btn mybutton">Публицистика</button></a>
-                <a href="{% url 'diaries' %}"><button id="diaries" class="btn mybutton">Дневники</button></a>
             </div>
             <div class="col-sm-12">
                 <a href="{% url 'letters' %}"><button id="letters" class="btn mybutton">Письма</button></a>
@@ -87,7 +86,7 @@
 
                 {% if works.paginator %}
 
-                    <div class="pagination">
+                    <div class="pagination" style="padding-top:4em;">
                         <span class="step-links">
                             {% if works.has_previous %}
                                 <a href="?page={{ works.previous_page_number }}"><< </a>

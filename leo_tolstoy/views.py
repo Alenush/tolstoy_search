@@ -73,12 +73,6 @@ def show_public(request):
         public_works = paginator.page(paginator.num_pages)
     return render(request, 'data.html', {"works": public_works})
 
-def show_diaries(request):
-    diaries = set()
-    for works in TeiWorks.objects.filter(sphere='дневники и записные книжки'):
-        diaries.add(works)
-    return render(request, 'data.html', {"works": diaries})
-
 def show_letters(request):
     letters = set()
     for works in TeiWorks.objects.filter(sphere='Личная и деловая переписка'):
@@ -290,6 +284,8 @@ def search_big(request):
                                                                 'len': len(docs)})
             else:
                 return redirect('/tolstoy/search/')
+    else:
+        return redirect('/tolstoy/search/')
 
 def ajax_test(request):
         email = request.GET.get('email', None)
@@ -329,11 +325,14 @@ def take_data_from_lemma(doc):
 
 def search_lemma(request):
     query_to_search = request.POST.get('search_input', '')
-    print("Whole", query_to_search)
-    words = [word.strip(punctuation + '- ').lower() for word in query_to_search.split() if word != '']
-    lemmas = [analyzer.parse(word)[0].normal_form for word in words]
-    documents = find_lemmas_docs(lemmas)
-    snippets = [take_data_from_lemma(doc) for doc in documents]
-    return render(request, 'text_search_out.html', {'res_docs': snippets,
-                                                        'query': query_to_search,
-                                                        'len': len(documents)})
+    if query_to_search:
+        print("Whole", query_to_search)
+        words = [word.strip(punctuation + '- ').lower() for word in query_to_search.split() if word != '']
+        lemmas = [analyzer.parse(word)[0].normal_form for word in words]
+        documents = find_lemmas_docs(lemmas)
+        snippets = [take_data_from_lemma(doc) for doc in documents]
+        return render(request, 'text_search_out.html', {'res_docs': snippets,
+                                                            'query': query_to_search,
+                                                            'len': len(documents)})
+    else:
+        return redirect('/tolstoy/search/')

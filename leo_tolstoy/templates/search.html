@@ -18,7 +18,7 @@
                   {% csrf_token %}
                   <div class="form-group" style="padding:3em">
                     <label for="search_input"></label>
-                    <input type="text" class="form-control" id="search_input" name="search_input" aria-describedby="search_help" placeholder="Введите запрос">
+                    <input type="text" class="form-control" style="font-size:20pt" id="search_input" name="search_input" aria-describedby="search_help" placeholder="Введите запрос">
                     <small id="search_help" class="form-text text-muted ">Введите запрос. Вы также можете воспользоваться фильтрами ниже.</small>
                     <br>
                     <button type="submit" class="btn btn-lg mybutton">Найти</button>
@@ -27,7 +27,7 @@
 
               </div>
 
-              <center><h3>Расширенный поиск</h3></center>
+              <center><h2>Расширенный поиск</h2></center>
               <img id="show_search" src="{% static 'leo_tolstoy/images/open-book.png' %}" style="cursor:pointer; padding:1em">
               <!--<center><div id="show_search" class="alert head_search" style="width:50%">Расширенный поиск</div></center>-->
 
@@ -57,8 +57,8 @@
 
                 <div class="form-group" style="padding:3em">
                 <label for="search_input"></label>
-                <input type="text" class="form-control" id="search_big_input" name="search_big_input" aria-describedby="search_help" placeholder="Введите запрос">
-                <br><button type="submit" id="submit_button" class="btn btn-lg mybutton">Найти</button>
+                <input type="text" class="form-control" style="font-size:20pt" id="search_big_input" name="search_big_input" aria-describedby="search_help" placeholder="Введите запрос">
+                <br><button type="submit" id="submit_button" class="btn mybutton">Найти</button>
               </div>
 
 
@@ -66,9 +66,9 @@
                     <div class="col-sm-4">
 
                           <div id='place' class="place">
-                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
+                          <div class="col-sm-12" style="text-align:left; padding:2em; float:left;">
                             <div class="head_search form-control">Место действия</div>
-                            <select name="place" class="form-control">
+                            <select name="place" class="form-control" style="font-size:15pt">
                               <option value="none" class="form-control">-</option>
                               <option value="Европа" class="form-control">Европа</option>
                               <option value="Россия" class="form-control">Россия</option>

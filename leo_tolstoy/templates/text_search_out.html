@@ -4,16 +4,17 @@
 
 {% load staticfiles %}
 
-<div class="container-fluid"><div class="row">
+<div class="container-fluid">
+<div class="row">
 <div class="col-sm-12">
 
     <h1>Результаты поиска</h1>
 
-    <div class="col-sm-12">
+    <div class="col-sm-10 col-sm-offset-1">
 
 
-        <h4 style="text-align:left">Всего найдено <b>{{ match }}</b> совпадений.В <b>{{ len }}</b> документах.</h4>
-        <h4 style="text-align:left"><i>Запрос: <b>{{ query }}</b></i></h4>
+        <h2 style="text-align:left">Всего найдено <b>{{ match }}</b> совпадений.В <b>{{ len }}</b> документах.</h2>
+        <h2 style="text-align:left">Запрос: <b>{{ query }}</b></h2>
 
         {% if len != 0 %}
 
@@ -22,11 +23,12 @@
 
             <div class="col-sm-10">
                 <h2><a href="./result/doc/{{ html_link }}" target="_blank">{{ name }}</a></h2>
-                <p><a href="./result/doc/{{ html_link }}" target="_blank">{{ paragraph }}</a></p>
+                <p><a href="./result/doc/{{ html_link }}" target="_blank" style="font-size:17pt">{{ paragraph }}</a></p>
             </div>
             <div class="col-sm-2">
-                <h4>Том №{{ volum }}</h4>
-                <button type="button" class="btn head_search"
+                <h3>Том №{{ volum }}</h3>
+                <h3>Цитировать документ:</h3>
+                <button type="button" class="btn head_search form-control"
                  data-toggle="modal" data-target="#myModal{{forloop.counter0}}">Cite</button>
             </div>
         </div>
@@ -61,11 +63,10 @@
         <hr>
         <div style="padding:2em">
 
-            <h4>Ничего не нашлось =(</h4>
+            <h4>По результатам запроса ничего не найдено.</h4>
         </div>
 
         {% endif %}
-
 </div>
 </div></div>
 

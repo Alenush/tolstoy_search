@@ -4,7 +4,7 @@
 
 {% load staticfiles %}
 
-<div class="container-fluid">
+<div class="container">
 <div class="row">
 
 
@@ -15,15 +15,15 @@
 
         <div class="col-sm-12 doc_results">
 
-            <h4>Запрос:<i> {{ query }}</i></h4>
-            <h4>Всего найдено <b>{{ len }}</b> документов.</h4>
+            <h2>Запрос:<i> {{ query }}</i></h2>
+            <h2>Всего найдено <b>{{ len }}</b> документов.</h2>
             <hr>
 
 
             {% for doc in res_docs %}
-            <h4 style="padding-bottom:1em">
+            <h2 style="padding-bottom:1em">
                     <span class="glyphicon glyphicon-ok" style="color:#4285F4;"></span>
-                    <b>{{ doc.name }}</b>. <span style="align:right"> {{ doc.source }} </span> </h4>
+                    <b>{{ doc.name }}</b>. <span style="align:right"> {{ doc.source }} </span> </h2>
             {% endfor %}
 
 

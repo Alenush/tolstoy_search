@@ -1,11 +1,12 @@
 * {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 12pt;
+    font-size: 15pt;
 }
 
-/*
- * Globals
- */
+h1 {
+    font-size:55px;
+}
+
 
 /* Links */
 a, a:focus, a:hover {
@@ -75,7 +76,7 @@ body {
 .masthead-nav > li > a {
   padding-right: 0;
   padding-left: 0;
-  font-size: 16px;
+  font-size: 26px;
   color: #fff;
   /*border-bottom: 1px solid transparent;*/
 }
@@ -136,37 +137,6 @@ body {
 }
 
 
-/*
- * Affix and center
-
-
-@media (min-width: 768px) {
-  .masthead {
-    position: fixed;
-    top: 0;
-  }
-  .mastfoot {
-    position: fixed;
-    bottom: 0;
-  }
-  .site-wrapper-inner {
-    vertical-align: middle;
-  }
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%;
-  }
-}
-@media (min-width: 992px) {
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 800px;
-  }
-}
-*/
-
 /* Buttons */
 
 .mybutton {
@@ -174,6 +144,7 @@ body {
     color: white;
     border: 1px solid #fff;
     margin-top: 1em;
+    font-size: larger;
 }
 .mybutton > a{
     color: white;
@@ -196,6 +167,8 @@ body {
   border: 1px solid #fff;
   text-align: center;
   margin-bottom: 1em;
+  font-size: large;
+  padding:0.7em;
 }
 
 
@@ -234,13 +207,14 @@ a.back-to-top {
 	border-radius: 30px;
 }
 
-.search_icon{
+.search_doc{
 	float: right;
 	width:20%;
 }
 
 .vol_button {
     background-color:#EDEBDA;
+    font-size:large;
 }
 
 .results_out{
@@ -252,7 +226,9 @@ a.back-to-top {
     margin-bottom: 1em;
 }
 
-.results_out h2 a{ color: #4285F4;}
+.results_out h2 a{
+    color: #4285F4;
+    font-size: 33pt;}
 
 .doc_results {
     padding: 1em;
@@ -264,4 +240,9 @@ a.back-to-top {
 
 .all_works {
     padding-bottom: 2em;
+}
+
+.form-control {
+    height: 40pt;
+    font-size: 15pt;
 }
