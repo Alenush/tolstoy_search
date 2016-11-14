@@ -307,9 +307,10 @@ def feedback_save(request):
         return redirect('/tolstoy/')
 
 
-def take_data_from_lemma(doc):
+def take_data_from_lemma(doc, query):
     """
     :param doc: path|page|par
+    :param query: array of query words
     :return: return only the first paragraph with this page
     """
     doc = doc.replace('_NoSameBacknotes','')
@@ -321,16 +322,19 @@ def take_data_from_lemma(doc):
     name = tei_doc[0].name
     volum = tei_doc[0].value
     cite = tei_doc[0].source + page
+    for q_word in query.split():
+        if q_word in parag:
+            parag = parag.replace(q_word, u'<b>{}</b>'.format(q_word))
     return (html_link, name, parag, volum, cite)
 
 def search_lemma(request):
     query_to_search = request.POST.get('search_input', '')
     if query_to_search:
         print("Whole", query_to_search)
-        words = [word.strip(punctuation + '- ').lower() for word in query_to_search.split() if word != '']
-        lemmas = [analyzer.parse(word)[0].normal_form for word in words]
-        documents = find_lemmas_docs(lemmas)
-        snippets = [take_data_from_lemma(doc) for doc in documents]
+        query_words = [word.strip(punctuation + '- ').lower() for word in query_to_search.split() if word != '']
+        query_lemmas = [analyzer.parse(word)[0].normal_form for word in query_words]
+        documents = find_lemmas_docs(query_lemmas)
+        snippets = [take_data_from_lemma(doc, query_to_search) for doc in documents]
         return render(request, 'text_search_out.html', {'res_docs': snippets,
                                                             'query': query_to_search,
                                                             'len': len(documents)})
