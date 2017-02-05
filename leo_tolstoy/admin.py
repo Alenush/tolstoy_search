@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import OriginalWorks, TeiWorks, MyUser, TolstoyTexts, LemmasInverseTable
+from .models import OriginalWorks, MyUser, TolstoyTexts, LemmasInverseTable, Letters
 
 admin.site.register(OriginalWorks)
-admin.site.register(TeiWorks)
+admin.site.register(Letters)
 
 admin.site.register(MyUser)
 admin.site.register(TolstoyTexts)

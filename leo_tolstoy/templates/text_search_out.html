@@ -13,23 +13,23 @@
     <div class="col-sm-10 col-sm-offset-1">
 
 
-        <h2 style="text-align:left">Всего найдено <b>{{ match }}</b> совпадений.В <b>{{ len }}</b> документах.</h2>
+        <h2 style="text-align:left">Найдено в <b>{{ len }}</b> документах.</h2>
         <h2 style="text-align:left">Запрос: <b>{{ query }}</b></h2>
 
         {% if len != 0 %}
 
-            {% for html_link, name, paragraph, volum, source in res_docs %}
+            {% for html_link, name, paragraph, volum, source, par_index in res_docs %}
         <div class="col-sm-12 results_out">
 
             <div class="col-sm-10">
-                <h2><a href="./result/doc/{{ html_link }}" target="_blank">{{ name }}</a></h2>
-                <p><a href="./result/doc/{{ html_link }}" target="_blank" style="font-size:17pt">{% autoescape off %}{{ paragraph }} {% endautoescape %}</a></p>
+                <h2 style="text-align:left"><a href="./result/doc/{{ html_link }}" target="_blank">{{ name }}</a></h2>
+                <p><a href="./result/doc/{{ html_link }}" target="_blank" style="font-size:17pt">{% autoescape off %}{{ paragraph }}{% endautoescape %}</a></p>
             </div>
             <div class="col-sm-2">
                 <h3>Том №{{ volum }}</h3>
                 <h3>Цитировать документ:</h3>
                 <button type="button" class="btn head_search form-control"
-                 data-toggle="modal" data-target="#myModal{{forloop.counter0}}">Cite</button>
+                 data-toggle="modal" data-target="#myModal{{forloop.counter0}}">Цитировать</button>
             </div>
         </div>
 
@@ -41,17 +41,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Процитировать</h4>
+                <h4 class="modal-title" id="myModalLabel">Процитировать документ</h4>
               </div>
               <div class="modal-body">
                 {{source}}
               </div>
               <div class="modal-footer">
-
-                <!--<button type="button" class="btn btn-warning" id="copy-button" data-clipboard-target="#post-shortlink">Копировать</button>-->
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
-
-
               </div>
             </div>
           </div>
@@ -68,6 +64,6 @@
 
         {% endif %}
 </div>
-</div></div>
+</div></div></div>
 
 {% endblock %}

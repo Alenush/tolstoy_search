@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/bootstrap/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/styles.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'leo_tolstoy/css/switch-toggle.css' %}">
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
@@ -43,15 +44,14 @@
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-sm-offset-9">
             <button id="oldnew" class="button head_search">Старая офрография</button>
+            <button id="newold" class="button head_search" style="display:none">Новая офрография</button>
             </div>
         </div>
-
         {% block content %}
 
         {% endblock %}
+
         </div>
-
-
 
          <a href="#" class="back-to-top">Up</a>
 
@@ -68,6 +68,7 @@
 </div>
 
 
+
 <script type="text/javascript" src="{% static 'leo_tolstoy/bootstrap/bootstrap.min.js' %}"></script>
 
 <script type="text/javascript" src="{% static 'leo_tolstoy/js/search.js' %}"></script>
@@ -75,20 +76,20 @@
 
 <script type="text/javascript" src="{% static 'leo_tolstoy/js/dynamic_for_all.js' %}"></script>
 
-<script type="text/javascript">
+<script type="text/javascript" >
 
-    $('#oldnew').click(function(){
-        if ($(this).text() == 'Старая офрография'){
+$('#oldnew').click(function(){
             $('span.reg').addClass('hidden');
             $('span.orig').removeClass('hidden');
-            $(this).html('Новая орфография');
-        }
-        else{
+            $('#newold').css('display','inline-block');
+            $('#oldnew').css('display','none');
+});
+$('#newold').click(function(){
             $('span.orig').addClass('hidden');
             $('span.reg').removeClass('hidden');
-            $(this).html('Старая орфография');
-        }
-    });
+            $('#oldnew').css('display','inline-block');
+            $('#newold').css('display','none');
+});
 
 </script>
 

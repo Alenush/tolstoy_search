@@ -21,7 +21,7 @@
                     <input type="text" class="form-control" style="font-size:20pt" id="search_input" name="search_input" aria-describedby="search_help" placeholder="Введите запрос">
                     <small id="search_help" class="form-text text-muted ">Введите запрос. Вы также можете воспользоваться фильтрами ниже.</small>
                     <br>
-                    <button type="submit" class="btn btn-lg mybutton">Найти</button>
+                    <button id="main_submit" type="submit" class="btn btn-lg mybutton">Найти</button>
                   </div>
               </form>
 
@@ -35,539 +35,610 @@
               <form id="search_form_big" action="{% url 'all_search' %}"
                     method="post">
                   {% csrf_token %}
-              <div id="extra_search" style="display:none;">
-                <div class="container-fluid">
+                  <div id="extra_search" style="display:none;">
+                        <div class="container-fluid">
 
-                <div class="toggle" style="padding:2em">
+                            <div class="toggle" style="padding:2em">
+                            <fieldset name="visible_toogle" style="padding:1em">
 
-                    <fieldset name="visible_toogle" style="padding:1em">
+                                          <div class="switch-toggle switch-ios">
+                                            <input id="search_text" value="text" name="format" type="radio" checked>
+                                            <label style="font-weight:normal" for="search_text" onclick="">Поиск по текстам</label>
 
-                                  <div class="switch-toggle switch-ios">
-                                    <input id="search_text" value="text" name="format" type="radio" checked>
-                                    <label style="font-weight:normal" for="search_text" onclick="">Текстовый поиск</label>
+                                            <input id="search_letters" value="letters" name="format" type="radio"> <!-- id="search_meta" -->
+                                            <label style="font-weight:normal" for="search_letters" onclick="">Поиск по письмам</label>
 
-                                    <input id="search_meta" value = "meta" name="format" type="radio">
-                                    <label style="font-weight:normal" for="search_meta" onclick="">Поиск по метаданным</label>
+                                          <a></a>
+                                          </div>
+                            </fieldset>
+                            </div>
 
-                                  <a></a>
+                        <div class="form-group" style="padding:3em">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                  <input id="search_big_input" name="big_search_query" type="text" class="form-control" aria-label="...">
+                                  <div class="input-group-btn">
+                                    <button type="button" id='search_toggle' class="btn btn-default dropdown-toggle"  style="font-size:20pt"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Искать по <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                      <li id="search_meta"><a href="#">Метаданным</a></li>
+                                      <li id="search_txt"><a href="#">Произведениям</a></li>
+                                    </ul>
                                   </div>
-                                </fieldset>
-
-                </div>
-
-                <div class="form-group" style="padding:3em">
-                <label for="search_input"></label>
-                <input type="text" class="form-control" style="font-size:20pt" id="search_big_input" name="search_big_input" aria-describedby="search_help" placeholder="Введите запрос">
-                <br><button type="submit" id="submit_button" class="btn mybutton">Найти</button>
-              </div>
+                                </div>
+                                <small id="search_hint">Поиск по текстам</small>
+                              </div>
+                              <br><button type="submit" id="submit_but" class="btn mybutton">Найти</button>
+                        </div>
 
 
-              <div class="col-sm-12">
-                    <div class="col-sm-4">
+                      <div id="search_texts" class="container-fluid">
+                         <div class="col-sm-12">
 
-                          <div id='place' class="place">
-                          <div class="col-sm-12" style="text-align:left; padding:2em; float:left;">
-                            <div class="head_search form-control">Место действия</div>
-                            <select name="place" class="form-control" style="font-size:15pt">
-                              <option value="none" class="form-control">-</option>
-                              <option value="Европа" class="form-control">Европа</option>
-                              <option value="Россия" class="form-control">Россия</option>
-                              <option value="Россия, Европа" class="form-control">Европа и Россия</option>
-                            </select>
-                          </div></div>
+                             <div class="col-sm-4">
 
-
-                          <div id='finish' class="place">
-                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                            <div class="head_search form-control">Законченность</div>
-                            <select name="finish" class="form-control">
-                              <option value="none" class="form-control">-</option>
-                              <option value="finished" class="form-control">Законченное</option>
-                              <option value="not finished" class="form-control">Незаконченное</option>
-                            </select>
-                          </div></div>
-
-                          <div id='orpho' class="place">
-                          <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                            <div class="head_search form-control">Орфография</div>
-                            <select name="orpho" class="form-control">
-                              <option value="none" class="form-control">-</option>
-                              <option value="new" class="form-control">Новая</option>
-                              <option value="old" class="form-control">Старая</option>
-                            </select>
-                          </div></div>
-
-                    </div>
+                                  <div id='place' class="place">
+                                  <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float:left;">
+                                    <div class="head_search form-control">Место действия</div>
+                                    <select name="place" class="form-control" style="font-size:15pt">
+                                      <option value="none" class="form-control">-</option>
+                                      <option value="Европа" class="form-control">Европа</option>
+                                      <option value="Россия" class="form-control">Россия</option>
+                                      <option value="Россия, Европа" class="form-control">Европа и Россия</option>
+                                    </select>
+                                  </div></div>
 
 
-                  <div class="col-sm-8" style="text-align:left; padding:2em; float: left">
-                      <div class="head_search form-control">Время написания</div>
+                                  <div id='finish' class="place">
+                                  <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float: left">
+                                    <div class="head_search form-control">Законченность</div>
+                                    <select name="finish" class="form-control">
+                                      <option value="none" class="form-control">-</option>
+                                      <option value="finished" class="form-control">Законченное</option>
+                                      <option value="not finished" class="form-control">Незаконченное</option>
+                                    </select>
+                                  </div></div>
 
-                        <div class="col-sm-3">
+                                  <div id='orpho' class="place">
+                                  <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float: left">
+                                    <div class="head_search form-control">Орфография</div>
+                                    <select name="orpho" class="form-control">
+                                      <option value="none" class="form-control">-</option>
+                                      <option value="new" class="form-control">Новая</option>
+                                      <option value="old" class="form-control">Старая</option>
+                                    </select>
+                                  </div></div>
 
+                          </div>
+
+
+                          <div class="col-sm-8" style="text-align:left; padding-bottom:1em; float: left">
+                              <div class="head_search form-control">Время написания</div>
+
+                                <div class="col-sm-3">
+
+                                      <div class="form-check">
+                                          <label class="form-check-label">
+                                            <button id="but3040" type="button" class="btn vol_button form-control">
+                                            1830-1850</button>
+                                          </label>
+                                        </div>
+                                      <div class="form-check ">
+                                          <label class="form-check-label">
+                                            <button id="but5070" type="button" class="btn vol_button form-control">
+                                            1850-1870</button>
+                                          </label>
+                                        </div>
+                                      <div class="form-check">
+                                          <label class="form-check-label">
+                                            <button id="but70" type="button" class="btn vol_button form-control" >
+                                            1871-1880</button>
+                                          </label>
+                                        </div>
+                                      <div class="form-check ">
+                                          <label class="form-check-label">
+                                            <button id="but80" type="button" class="btn vol_button form-control">
+                                            1881-1890</button>
+                                          </label>
+                                        </div>
+                                        <div class="form-check ">
+                                          <label class="form-check-label">
+                                            <button id="but90" type="button" class="btn vol_button form-control" >
+                                            1890  и позже</button>
+                                          </label>
+                                        </div>
+                                  </div>
+                                  <div class="col-sm-8 checks">
+
+                                       {% for year in years %}
+                                      <div class="col-sm-3" style="display:none">
+                                      <label class="checkbox_year" style="margin-bottom:25px;">
+
+                                            <input type="checkbox" class="btn checkbox_year" name="year" value="{{ year }}">
+                                            {{ year }}
+                                            </label>
+                                      </div>
+                                       {% endfor %}
+
+                                   </div>
+
+                          </div>
+                          </div>
+
+                            <div id='century' class="place">
+                          <div class="col-sm-4" style="text-align:left; padding-bottom:1em; float: left">
+                              <div class="head_search form-control">Век повествования</div>
                               <div class="form-check">
                                   <label class="form-check-label">
-                                    <button id="but3040" type="button" class="btn vol_button form-control">
-                                    1830-1850</button>
+                                    <input type="checkbox" class="form-check-input" name="century" value="XVII век">
+                                    XVII век
                                   </label>
                                 </div>
                               <div class="form-check ">
                                   <label class="form-check-label">
-                                    <button id="but5070" type="button" class="btn vol_button form-control">
-                                    1850-1870</button>
+                                    <input type="checkbox" class="form-check-input" name="century" value="XVII-XVIII век">
+                                    XVII-XVIII век
                                   </label>
                                 </div>
                               <div class="form-check">
                                   <label class="form-check-label">
-                                    <button id="but70" type="button" class="btn vol_button form-control" >
-                                    1871-1880</button>
+                                    <input type="checkbox" class="form-check-input" name="century" value="XVIII век">
+                                    XVIII век
                                   </label>
                                 </div>
                               <div class="form-check ">
                                   <label class="form-check-label">
-                                    <button id="but80" type="button" class="btn vol_button form-control">
-                                    1881-1890</button>
+                                    <input type="checkbox" class="form-check-input" name="century" value="XVIII-XIX век">
+                                    XVIII-XIX век
                                   </label>
                                 </div>
                                 <div class="form-check ">
                                   <label class="form-check-label">
-                                    <button id="but90" type="button" class="btn vol_button form-control" >
-                                    1890  и позже</button>
+                                    <input type="checkbox" class="form-check-input" name="century" value="XIX век">
+                                    XIX век
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="century" value="XIX-XX век">
+                                    XIX-XX век
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input " name="century" value="XX век">
+                                    XX век
                                   </label>
                                 </div>
                           </div>
-                          <div class="col-sm-8 checks">
+                          </div>
 
-                               {% for year in years %}
-                              <div class="col-sm-3" style="display:none">
-                              <label class="checkbox_year">
+                            <div id='sphere' class="place">
+                          <div class="col-sm-4" style="text-align:left; padding-bottom:1em; float: left">
+                              <div class="head_search form-control">Сфера</div>
+                              <!--<div class="form-check">-->
+                                  <!--<label class="form-check-label">-->
+                                    <!--<input type="checkbox" class="form-check-input" name="sphere" value="Личная и деловая переписка">-->
+                                    <!--личная и деловая переписка-->
+                                  <!--</label>-->
+                                <!--</div>-->
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="sphere" value="Церковно-богословская литература">
+                                    церковно-богословская литература
+                                  </label>
+                                </div>
+                              <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="sphere" value="детская литература">
+                                    детская литература
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="sphere" value="дидактика">
+                                    дидактика
+                                  </label>
+                                </div>
+                                <!--<div class="form-check ">-->
+                                  <!--<label class="form-check-label">-->
+                                    <!--<input type="checkbox" class="form-check-input" name="sphere" value="дневники и записные книжки">-->
+                                    <!--дневники и записные книжки-->
+                                  <!--</label>-->
+                                <!--</div>-->
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="sphere" value="публицистика">
+                                    публицистика
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input " name="sphere" value="художественная">
+                                    художественная
+                                  </label>
+                                </div>
+                          </div>
+                          </div>
 
-                                    <input type="checkbox" class="btn checkbox_year" name="year" value="{{ year }}">
-                                    {{ year }}
-                                    </label>
+                            <div class="col-sm-4">
+
+                                <div id='edit' class="place">
+                                  <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float: left">
+                                    <div class="head_search form-control">Издание</div>
+                                    <select name="edit" class="form-control">
+                                      <option value="none" class="form-control">-</option>
+                                      <option value="edited" class="form-control">Изданное</option>
+                                      <option value="not edited" class="form-control">Неизданное</option>
+                                    </select>
+                                  </div>
+                                </div>
+
+
+                            <div id='cycle' class="place">
+                                  <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float: left">
+                                    <div class="head_search form-control">Цикл произведений</div>
+                                    <select name="cycle" class="form-control">
+                                      <option value="none" class="form-control">-</option>
+                                      <option value="цикл" class="form-control">Входит в цикл</option>
+                                    </select>
+                                </div></div>
+
+                            </div>
+
+
+                            <div id='topic' class="place" style="display:none;">
+                          <div class="col-sm-5" style="text-align:left; padding-bottom:1em; float: left">
+                              <div class="head_search form-control">Тема/Топик</div>
+                              <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="delo">
+                                    деловая переписка
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="art">
+                                    искусство
+                                  </label>
+                                </div>
+                              <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="med">
+                                    медицина
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="edu">
+                                    образование
+                                  </label>
+                                </div>
+                                <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="politic">
+                                    политика и общественная жизнь
+                                  </label>
+                                </div>
+                              <div class="form-check ">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input"  value="phil">
+                                    философия и религия
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input "  value="privet">
+                                    частная жизнь
+                                  </label>
+                                </div>
+                          </div>
+                          </div>
+
+
+                            <div id='type' class="place">
+                              <div class="col-sm-12" style="text-align:left; padding-bottom:1em; float:left">
+                                    <div class="head_search form-control">Тип произведения</div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="заметки">
+                                        заметки
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="притча">
+                                        притча
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="повесть">
+                                        повесть
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="сборник">
+                                        сборник
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="роман">
+                                        роман
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="житие">
+                                        житие
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="грамматика">
+                                        грамматика
+                                        </label>
+                                        </div>
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="путевые записки">
+                                        путевые записки
+                                        </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="рассказ">
+                                        рассказ
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="письмо">
+                                        письмо
+                                        </label>
+                                        </div>
+                                            <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="сказка">
+                                        сказка
+                                        </label>
+                                        </div>
+                                            <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="статья">
+                                        статья
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="некролог">
+                                        некролог
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="объявление">
+                                        объявление
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="конспект">
+                                        конспект
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="речь">
+                                        речь
+                                        </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="трактат">
+                                        трактат
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="поэзия">
+                                        поэзия
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="очерк">
+                                        очерк
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="записки">
+                                        записки
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="отрывок">
+                                        отрывок
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="азбука">
+                                        азбука
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="автобиография">
+                                        автобиография
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="диалог">
+                                        диалог
+                                        </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="комедия">
+                                        комедия
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="проект">
+                                        проект
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="перевод">
+                                        перевод
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="обращение">
+                                        обращение
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="план">
+                                        план
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="легенда">
+                                        легенда
+                                        </label>
+                                        </div><div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="type" value="драма">
+                                        драма
+                                        </label>
+                                        </div>
+                                    </div>
+
                               </div>
-                               {% endfor %}
+                              </div>
 
-                           </div>
+                            <div id='volums' class="place">
+                              <div class="col-sm-6" style="text-align:left; padding-bottom:1em; float:left">
+                                  <div class="head_search form-control">Выберите том</div>
 
-                  </div>
-                  </div>
+                                  {% for number in vol_array %}
+                                  <div class="col-sm-1 form-check">
+                                      <label class="form-check-label" >
+                                        <input type="checkbox" class="form-check-input" name="volum" value="{{number}}">
+                                        {{number}}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
 
+                          </div></div>
 
-                  <div id='century' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
-                      <div class="head_search form-control">Век повествования</div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XVII век">
-                            XVII век
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XVII-XVIII век">
-                            XVII-XVIII век
-                          </label>
-                        </div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XVIII век">
-                            XVIII век
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XVIII-XIX век">
-                            XVIII-XIX век
-                          </label>
-                        </div>
-                        <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XIX век">
-                            XIX век
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="century" value="XIX-XX век">
-                            XIX-XX век
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input " name="century" value="XX век">
-                            XX век
-                          </label>
-                        </div>
-                  </div>
-                  </div>
+                          <div id='topics' class="place">
+                              <div class="col-sm-6" style="text-align:left; padding-bottom:1em; float:left">
+                                  <div class="head_search form-control">Выберите топик</div>
 
-                  <div id='sphere' class="place">
-                  <div class="col-sm-4" style="text-align:left; padding:2em; float: left">
-                      <div class="head_search form-control">Сфера</div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="Личная и деловая переписка">
-                            личная и деловая переписка
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="Церковно-богословская литература">
-                            церковно-богословская литература
-                          </label>
-                        </div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="детская литература">
-                            детская литература
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="дидактика">
-                            дидактика
-                          </label>
-                        </div>
-                        <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="дневники и записные книжки">
-                            дневники и записные книжки
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="sphere" value="публицистика">
-                            публицистика
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input " name="sphere" value="художественная">
-                            художественная
-                          </label>
-                        </div>
-                  </div>
-                  </div>
+                                  {% for top in topics %}
+                                      <input type="checkbox" name="topic" value="{{top}}">{{top}}
+                                  {% endfor %}
 
-                    <div class="col-sm-4">
+                          </div></div>
 
-                  <div id='edition' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Издание</div>
-                    <select name="edit" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="edited" class="form-control">Изданное</option>
-                      <option value="not edited" class="form-control">Неизданное</option>
-                    </select>
-                  </div></div>
+                      </div>
+                      <!-- End of text_search -->
+
+                      <!-- Begin letters_search -->
+                      <div id="letters_search" class="container-fluid" style="display:none">
+
+                          <div id="left_column" class="col-sm-7">
 
 
-                    <div id='cycle' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                    <div class="head_search form-control">Цикл произведений</div>
-                    <select name="cycle" class="form-control">
-                      <option value="none" class="form-control">-</option>
-                      <option value="цикл" class="form-control">Входит в цикл</option>
-                    </select>
-                  </div></div>
+                              <div id='letter_ids' class="place">
+                              <div class="col-sm-6">
+                                  <div class="head_search form-control">Выберите номер письма</div>
+                                  <!-- с первого по 931 -->
+                                  <div id="letter_id" class="col-sm-12">
+                                        <input type="text" name="let_id" class="form-control" placeholder="Выберите номер письма от 1 до 931">
+                                  </div>
 
-                    </div>
-
-
-                    <div id='topic' class="place" style="display:none;">
-                  <div class="col-sm-5" style="text-align:left; padding:2em; float: left">
-                      <div class="head_search form-control">Тема/Топик</div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="delo">
-                            деловая переписка
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="art">
-                            искусство
-                          </label>
-                        </div>
-                      <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="med">
-                            медицина
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="edu">
-                            образование
-                          </label>
-                        </div>
-                        <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="politic">
-                            политика и общественная жизнь
-                          </label>
-                        </div>
-                      <div class="form-check ">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input"  value="phil">
-                            философия и религия
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input "  value="privet">
-                            частная жизнь
-                          </label>
-                        </div>
-                  </div>
-                  </div>
-
-
-                  <div id='type' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                        <div class="head_search form-control">Тип произведения</div>
-                        <div class="col-sm-3">
-                            <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="заметки">
-                            заметки
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="притча">
-                            притча
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="повесть">
-                            повесть
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="сборник">
-                            сборник
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="роман">
-                            роман
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="житие">
-                            житие
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="грамматика">
-                            грамматика
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="записная книжка">
-                            записная книжка
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="дневник">
-                            дневник
-                            </label>
+                              </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="рассказ">
-                            рассказ
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="сборник рассказов">
-                            сборник рассказов
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="письмо">
-                            письмо
-                            </label>
+
+                            <div id="let_type" class="place col-sm-6" style="padding-bottom:1em">
+                                    <div class="head_search form-control">Тип письма</div>
+                                        <select name="let_type" class="form-control">
+                                          <option value="none" class="form-control">-</option>
+                                          <option value="sending" class="form-control">Отправленное</option>
+                                          <option value="draft" class="form-control">Драфт</option>
+                                          <option value="unsent" class="form-control">Неотправленное</option>
+                                        </select>
                             </div>
-                                <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="сказка">
-                            сказка
-                            </label>
-                            </div>
-                                <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="статья">
-                            статья
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="завещание">
-                            завещание
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="некролог">
-                            некролог
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="объявление">
-                            объявление
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="конспект">
-                            конспект
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="речь">
-                            речь
-                            </label>
+
+                            <div id="adressat" class="place col-sm-6" style="padding-bottom:1em">
+                                    <div class="head_search form-control">Получатель</div>
+                                    <div id="addreesse">
+                                        <select name="let_adressat" class="form-control">
+                                          <option value="none" class="form-control">-</option>
+
+                                          {% for adr in addressats %}
+                                          <option value="{{ adr }}" class="form-control">{{ adr }}</option>
+
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div id="let_place" class="place col-sm-6" style="padding-bottom:1em">
+                                    <div class="head_search form-control">Место</div>
+                                    <select name="let_place" class="form-control">
+                                          <option value="none" class="form-control">-</option>
+
+                                          {% for place in let_place %}
+                                          <option value="{{ place }}" class="form-control">{{ place }}</option>
+
+                                          {% endfor %}
+                                        </select>
+                                </div>
+
+                               <div id="datas" class="place col-sm-12" style="padding-bottom:1em">
+                                <div class="head_search form-control">Дата письма</div>
+
+                                    <div id="date1" class="col-sm-6">
+                                        <input type="text" name="date1" id="datepicker1" class="form-control" placeholder="От">
+                                    </div>
+
+                                    <div id="date2" class="col-sm-6">
+                                        <input type="text" name="date2" id="datepicker2" class="form-control" placeholder="До">
+                                    </div>
+                                 </div>
+
+                       </div> <!-- left column close -->
+
+                        <div id="right_column" class="col-sm-5">
+                           <div id='letter_volums' class="place">
+                              <div class="col-sm-12" >
+                                  <div class="head_search form-control">Выберите том</div>
+
+                                  {% for number in let_volums %}
+                                  <div class="col-sm-1 form-check">
+                                      <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="let_volum" value="{{number}}">
+                                        {{number}}
+                                      </label>
+                                    </div>
+                                  {% endfor %}
+
+                              </div>
+
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
-                            <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="трактат">
-                            трактат
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="поэзия">
-                            поэзия
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="очерк">
-                            очерк
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="записки">
-                            записки
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="отрывок">
-                            отрывок
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="азбука">
-                            азбука
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="автобиография">
-                            автобиография
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="диалог">
-                            диалог
-                            </label>
-                            </div>
-                                <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="прошение">
-                            прошение
-                            </label>
-                            </div>
-                            <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="путевые записки">
-                            путевые записки
-                            </label>
-                            </div>
 
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="комедия">
-                            комедия
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="проект">
-                            проект
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="сборник афоризмов">
-                            сборник афоризмов
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="пересказ">
-                            пересказ
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="перевод">
-                            перевод
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="обращение">
-                            обращение
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="план">
-                            план
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="легенда">
-                            легенда
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="устав">
-                            устав
-                            </label>
-                            </div><div class="form-check">
-                            <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="type" value="драма">
-                            драма
-                            </label>
-                            </div>
-                        </div>
+                      </div>
+
+                      </div>
 
                   </div>
-                  </div>
-
-
-              <!-- 90 volums => 30 * 3 => 30/2  -->
-              <div id='volums' class="place">
-                  <div class="col-sm-12" style="text-align:left; padding:2em; float: left">
-                      <div class="head_search form-control">Выберите том</div>
-
-                      {% for number in vol_array %}
-                      <div class="col-sm-1 form-check">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="volum" value="{{number}}">
-                            {{number}}
-                          </label>
-                        </div>
-                      {% endfor %}
-
-              </div></div>
-
-
-                </div></div>
-
               </form>
           </div>
           </div>
           </div>
-
 
 {% endblock %}

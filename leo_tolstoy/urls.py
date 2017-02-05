@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'result/doc/(?P<link>.+)/$', views.redirect_to_html, name='redirect'),
 
     url(r'^ajax/ajax_test/$', views.ajax_test, name='ajax_call'),
-    url(r'^/$', views.feedback_save, name='feedback'),
+    url(r'^$', views.feedback_save, name='feedback'),
 ]

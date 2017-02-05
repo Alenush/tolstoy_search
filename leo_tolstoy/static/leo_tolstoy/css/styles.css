@@ -238,6 +238,14 @@ a.back-to-top {
     text-align: left;
 }
 
+.doc_results p, span{
+    font-size: 24px;
+}
+
+.doc_results h1, h2, h3{
+    text-align:center;
+}
+
 .all_works {
     padding-bottom: 2em;
 }
@@ -246,3 +254,31 @@ a.back-to-top {
     height: 40pt;
     font-size: 15pt;
 }
+
+.ui-datepicker, #ui-datepicker-div {
+  width: auto;
+  height: auto;
+  margin: 5px auto 0;
+}
+
+.ui-datepicker table {
+  width: 100%;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    background: #EDEBDA;
+}
+
+.ui-state-default .ui-widget-content{
+     background: #EDEBDA;
+}
+
+.note {
+    font-style: italic;
+    color: blue;
+}
+
+.right, .Obrashenie, .epigraph {
+    font-style: italic;
+}
+

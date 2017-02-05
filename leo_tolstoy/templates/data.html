@@ -71,6 +71,15 @@
 
                 {% endif %}
 
+		{% if check == 2 %}
+
+                <div id="download_all" style="padding:2em">
+                <a href="{% url 'files_download' tag='all_letters' %}" target="_blank"><button class="btn head_search">Скачать все письма одним файлом</button></a>
+                </div>
+                <p></p>
+
+                {% endif %}
+
                 {% for work in works %}
 
                    <div class="col-sm-3 one_doc {{work.sphere}}">
